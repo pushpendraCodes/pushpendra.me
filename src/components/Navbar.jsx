@@ -21,9 +21,7 @@ const Navbar = () => {
 
           {/* Left Side - Logo */}
           <h1 className="text-xl font-semibold text-gray-900 tracking-wide">
-            One
-            <span className="mx-0.5 text-orange-600 font-bold">9</span>
-            Tech
+           Pushpendra Patel
           </h1>
 
           {/* Desktop Navigation */}
