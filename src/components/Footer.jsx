@@ -45,12 +45,12 @@ export default function Footer() {
               Get Free Consultation
             </button>
 
-             <a href="tel:+918516064332">
-                <button className="border-2 border-gray-300 text-gray-800 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
-              Call Us Now
-            </button>
-              </a>
-           
+            <a href="tel:+918516064332">
+              <button className="border-2 border-gray-300 text-gray-800 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
+                Call Us Now
+              </button>
+            </a>
+
           </div>
         </div>
 
@@ -86,7 +86,7 @@ export default function Footer() {
                   <div className="w-6 h-6 bg-white rounded rotate-45"></div>
                 </div> */}
                 <span className="text-xl font-bold text-gray-900">
-                 One9 Tech
+                  Pushpendra Patel
                 </span>
               </div>
 
@@ -167,7 +167,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-gray-200">
           <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between gap-4 text-sm text-gray-600">
-            <span>© 2025 One9.Tech Agency. All rights reserved.</span>
+            <span>© 2026 Pushpendra Patel. All rights reserved.</span>
             <div className="flex gap-6">
               <a href="#" className="hover:text-gray-900">Privacy Policy</a>
               <a href="#" className="hover:text-gray-900">Terms of Service</a>

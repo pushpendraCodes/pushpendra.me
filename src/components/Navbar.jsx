@@ -71,7 +71,7 @@ const Navbar = () => {
             <a href="https://github.com/pushpendraCodes" target='blank' className="text-gray-600 hover:text-gray-900 transition">
               <Github className="h-5 w-5" />
             </a>
-            <a href="https://www.instagram.com/one9.tech?igsh=aGdpMHlmb2Q2a2ln" target='blank' className="text-pink-600 hover:text-pink-500 transition">
+            <a href="https://www.instagram.com/?igsh=aGdpMHlmb2Q2a2ln" target='blank' className="text-pink-600 hover:text-pink-500 transition">
               <Instagram className="h-5 w-5" />
             </a>
             <a
