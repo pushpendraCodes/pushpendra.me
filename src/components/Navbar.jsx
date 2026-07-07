@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Github, Plus, Instagram, Menu, X, ChevronDown } from 'lucide-react';
-import { FaWhatsapp } from "react-icons/fa";
+import { FaLinkedin, FaWhatsapp } from "react-icons/fa";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -20,10 +20,8 @@ const Navbar = () => {
         <div className="flex h-16 items-center justify-between">
 
           {/* Left Side - Logo */}
-          <h1 className="text-xl font-semibold text-gray-900 tracking-wide">
-            One
-            <span className="mx-0.5 text-orange-600 font-bold">9</span>
-            Tech
+          <h1 className="text-3xl font-bold text-gray-900">
+            𝕻𝖚𝖘𝖍𝖕𝖊𝖓𝖉𝖗𝖆 <span className="text-orange-600">𝕻𝖆𝖙𝖊𝖑</span>
           </h1>
 
           {/* Desktop Navigation */}
@@ -71,7 +69,7 @@ const Navbar = () => {
             <a href="https://github.com/pushpendraCodes" target='blank' className="text-gray-600 hover:text-gray-900 transition">
               <Github className="h-5 w-5" />
             </a>
-            <a href="https://www.instagram.com/one9.tech?igsh=aGdpMHlmb2Q2a2ln" target='blank' className="text-pink-600 hover:text-pink-500 transition">
+            <a href="https://www.instagram.com/one9.tech" target='blank' className="text-pink-600 hover:text-pink-500 transition">
               <Instagram className="h-5 w-5" />
             </a>
             <a
@@ -81,6 +79,14 @@ const Navbar = () => {
               className="text-green-500 hover:text-green-400 transition"
             >
               <FaWhatsapp className="h-5 w-5" />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/1pushpendrapatel/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:text-blue-400 transition"
+            >
+              <FaLinkedin className="h-5 w-5" />
             </a>
 
 
@@ -159,7 +165,7 @@ const Navbar = () => {
 
           {/* Social Icons Mobile */}
           <div className="flex items-center gap-4 pt-4 border-t border-gray-200">
-             <a href="https://github.com/pushpendraCodes" target='blank' className="text-gray-600 hover:text-gray-900 transition">
+            <a href="https://github.com/pushpendraCodes" target='blank' className="text-gray-600 hover:text-gray-900 transition">
               <Github className="h-5 w-5" />
             </a>
             <a href="https://www.instagram.com/one9.tech?igsh=aGdpMHlmb2Q2a2ln" target='blank' className="text-pink-600 hover:text-pink-500 transition">
@@ -178,11 +184,11 @@ const Navbar = () => {
 
           {/* CTA Button Mobile */}
           <a href="https://wa.me/918516064332?text=Hello%20I%20need%20support"
-              target="_blank"
-              rel="noopener noreferrer" className="flex items-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100 transition">
-              <Plus className="h-4 w-4" />
-              New Project
-            </a>
+            target="_blank"
+            rel="noopener noreferrer" className="flex items-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100 transition">
+            <Plus className="h-4 w-4" />
+            New Project
+          </a>
         </div>
       </div>
     </nav>

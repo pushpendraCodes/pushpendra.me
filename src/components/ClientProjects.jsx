@@ -24,6 +24,15 @@ const ClientProjects = () => {
             category: "E-Commerce"
         },
         {
+            title: "Review QR",
+            status: "Live",
+            description: "Review QR- A QR Code based review platform",
+            image: "/projectsThumbnails/thumbnail5.png",
+            technologies: ["Next js", "tailwindcss", "Javascript", "Nodejs", "Ai"],
+            link: "https://www.getreviewqr.com/",
+            category: "Marketing"
+        },
+        {
             title: "FarmHouse Kitchen",
             status: "Live",
             description: " FarmHouse Kitchen - Secure Enjoy Your Delicious  Food",
@@ -259,11 +268,10 @@ const ClientProjects = () => {
                         <button
                             key={idx}
                             onClick={() => setCurrentIndex(idx)}
-                            className={`h-2 rounded-full transition-all duration-300 ${
-                                idx === currentIndex
-                                    ? 'w-8 bg-orange-500'
-                                    : 'w-2 bg-gray-300 hover:bg-gray-400'
-                            }`}
+                            className={`h-2 rounded-full transition-all duration-300 ${idx === currentIndex
+                                ? 'w-8 bg-orange-500'
+                                : 'w-2 bg-gray-300 hover:bg-gray-400'
+                                }`}
                             aria-label={`Go to slide ${idx + 1}`}
                         />
                     ))}

@@ -2,6 +2,26 @@ import React from 'react';
 import { Twitter, Linkedin, Github, Instagram, MapPin, Phone, Mail } from 'lucide-react';
 
 export default function Footer() {
+
+  const socialLinks = [
+    {
+      icon: Twitter,
+      url: "#",
+    },
+    {
+      icon: Linkedin,
+      url: "https://www.linkedin.com/in/1pushpendrapatel/",
+    },
+    {
+      icon: Github,
+      url: "https://github.com/pushpendraCodes",
+    },
+    {
+      icon: Instagram,
+      url: "https://www.instagram.com/one9.tech",
+    },
+  ];
+
   return (
     <footer className="relative overflow-hidden bg-gradient-to-b from-white to-amber-50 text-gray-800">
 
@@ -45,12 +65,12 @@ export default function Footer() {
               Get Free Consultation
             </button>
 
-             <a href="tel:+918516064332">
-                <button className="border-2 border-gray-300 text-gray-800 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
-              Call Us Now
-            </button>
-              </a>
-           
+            <a href="tel:+918516064332">
+              <button className="border-2 border-gray-300 text-gray-800 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
+                Call Us Now
+              </button>
+            </a>
+
           </div>
         </div>
 
@@ -86,7 +106,7 @@ export default function Footer() {
                   <div className="w-6 h-6 bg-white rounded rotate-45"></div>
                 </div> */}
                 <span className="text-xl font-bold text-gray-900">
-                 One9 Tech
+                  One9 Tech
                 </span>
               </div>
 
@@ -95,10 +115,12 @@ export default function Footer() {
               </p>
 
               <div className="flex gap-3">
-                {[Twitter, Linkedin, Github, Instagram].map((Icon, i) => (
+                {socialLinks.map(({ icon: Icon, url }, i) => (
                   <a
                     key={i}
-                    href="#"
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="bg-white border border-gray-200 p-2.5 rounded-lg hover:bg-gray-100 transition"
                   >
                     <Icon className="w-5 h-5 text-gray-700" />
@@ -167,7 +189,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-gray-200">
           <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between gap-4 text-sm text-gray-600">
-            <span>© 2025 One9.Tech Agency. All rights reserved.</span>
+            <span>© 2025 Pushpendra Patel. All rights reserved.</span>
             <div className="flex gap-6">
               <a href="#" className="hover:text-gray-900">Privacy Policy</a>
               <a href="#" className="hover:text-gray-900">Terms of Service</a>
