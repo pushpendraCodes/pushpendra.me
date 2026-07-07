@@ -23,7 +23,7 @@ const Hero = () => {
 
             <p className="mb-6 md:mb-8 text-base sm:text-lg leading-relaxed text-gray-600">
               We help fast-growing businesses build, automate, and scale powerful digital products.
-              From custom applications to smart infrastructure, One9 Tech turns complex ideas into
+              From custom applications to smart infrastructure, we turns complex ideas into
               simple, reliable solutions.
             </p>
 

@@ -18,7 +18,7 @@ const services = [
     let index = 0;
 
     const interval = setInterval(() => {
-      document.title = `one9tech | ${services[index]}`;
+      document.title = `Pushpendra Patel | ${services[index]}`;
       index = (index + 1) % services.length;
     }, 2000); // change every 2 seconds
 
