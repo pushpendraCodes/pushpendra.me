@@ -1,5 +1,6 @@
 import React from 'react';
 import Hero from './Hero';
+import About from './About';
 import HowWeWork1 from './HowWeWork1';
 import TechFlowchart from './TechFlowchart';
 import ServicesSection from './ServicesSection';
@@ -13,6 +14,10 @@ const Home = () => {
     <div>
       <ScrollReveal>
         <Hero />
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <About />
       </ScrollReveal>
 
       <ScrollReveal>

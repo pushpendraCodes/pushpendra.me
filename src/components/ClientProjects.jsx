@@ -49,6 +49,15 @@ const ClientProjects = () => {
             technologies: ["React", "Node.js", "MongoDB"],
             link: "https://banking-frontend-webiste.vercel.app/",
             category: "Finance"
+        },
+        {
+            title: "Optech Computer Institute",
+            status: "Live",
+            description: "Optech Computer Institute - A Computer Education  Institute",
+            image: "/projectsThumbnails/thumbnail6.png",
+            technologies: ["React"],
+            link: "https://optech-website.vercel.app/",
+            category: "Education"
         }
     ];
 

@@ -55,12 +55,9 @@ const Navbar = () => {
             <a className="text-sm font-medium text-gray-700 hover:text-gray-900 transition" href="#works">
               Work
             </a>
-            {/* <a className="text-sm font-medium text-gray-700 hover:text-gray-900 transition" href="#">
-              About Us
+            <a className="text-sm font-medium text-gray-700 hover:text-gray-900 transition" href="#about">
+              About
             </a>
-            <a className="text-sm font-medium text-gray-700 hover:text-gray-900 transition" href="#">
-              Contact Us
-            </a> */}
           </div>
 
           {/* Right Side - Desktop */}
@@ -156,12 +153,9 @@ const Navbar = () => {
           <a className="block py-2 text-base font-medium text-gray-700 hover:text-gray-900 transition" href="#works">
             Work
           </a>
-          {/* <a className="block py-2 text-base font-medium text-gray-700 hover:text-gray-900 transition" href="#">
-            About Us
+          <a className="block py-2 text-base font-medium text-gray-700 hover:text-gray-900 transition" href="#about">
+            About
           </a>
-          <a className="block py-2 text-base font-medium text-gray-700 hover:text-gray-900 transition" href="#">
-            Contact Us
-          </a> */}
 
           {/* Social Icons Mobile */}
           <div className="flex items-center gap-4 pt-4 border-t border-gray-200">
