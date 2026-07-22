@@ -38,18 +38,10 @@ const ClientProjects = () => {
             description: " FarmHouse Kitchen - Secure Enjoy Your Delicious  Food",
             image: "/projectsThumbnails/thumbnail3.jpg",
             technologies: ["React", "Node.js", "MongoDB"],
-            link: "https://farmhouse-kitchen-website-frontend.vercel.app/",
+            link: "https://farmhouse-kitchen-website.vercel.app/",
             category: "Food"
         },
-        {
-            title: "Maa Anusaya Urban",
-            status: "Live",
-            description: "माँ अनुसया अर्बन क्रेडिट को-ऑपरेटिव सोसायटी लिमिटेड",
-            image: "/projectsThumbnails/thumbnail4.jpg",
-            technologies: ["React", "Node.js", "MongoDB"],
-            link: "https://banking-frontend-webiste.vercel.app/",
-            category: "Finance"
-        },
+        
         {
             title: "Optech Computer Institute",
             status: "Live",
