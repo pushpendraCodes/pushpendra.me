@@ -6,6 +6,15 @@ const ClientProjects = () => {
 
     const projects = [
         {
+            title: "Dil Se Dil Tak",
+            status: "Live",
+            description: "Dil Se Dil Tak - Chat , Call , Game",
+            image: "./projectsThumbnails/thumbnail7.jpeg",
+            technologies: ["React", "Node.js", "Next.js", "TailwindCSS", "MongoDB", "Agora SDK"],
+            link: "https://dilsee.com",
+            category: "Chat , Call , Game"
+        },
+        {
             title: "Shri Bagherwal Samaj Sahayata",
             status: "Live",
             description: "Shri Bagherwal Samaj Sahayata Trust",

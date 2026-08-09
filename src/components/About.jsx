@@ -3,8 +3,11 @@ import { MapPin, Github, Linkedin, Code2, Rocket, Users } from "lucide-react";
 const techStack = [
   "React",
   "Next.js",
+  "TypeScript",
+  "JavaScript",
   "Node.js",
   "MongoDB",
+  "PostgreSQL",
   "Tailwind CSS",
   "React Native",
   "WhatsApp API",

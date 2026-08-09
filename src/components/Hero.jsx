@@ -20,9 +20,9 @@ const Hero = () => {
 
           {/* CONTENT */}
           <div className="text-left order-2 lg:order-1">
-            <span className="inline-block px-4 py-1.5 mb-4 bg-white border-2 border-gray-300 rounded-full text-sm font-medium text-gray-700">
+            {/* <span className="inline-block px-4 py-1.5 mb-4 bg-white border-2 border-gray-300 rounded-full text-sm font-medium text-gray-700">
               One9 Tech · Software Development
-            </span>
+            </span> */}
 
             <h1 className="mb-4 md:mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900">
               We Build Web &amp; Mobile Apps That{" "}
