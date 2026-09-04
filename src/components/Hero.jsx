@@ -1,70 +1,95 @@
-import { ArrowRight, CheckCircle2 } from "lucide-react";
-import VideoPlayer from "./VideoPlayer";
-
-const proofPoints = [
-  "5+ live products in production",
-  "Web, mobile & custom software",
-  "Based in India · Working globally",
-];
+import React, { useRef, useState } from 'react';
+import { ArrowRight, MessageCircle } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 const Hero = () => {
+  const { isTheme1 } = useTheme();
+  const panelRef = useRef(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  const whatsappUrl =
+    'https://wa.me/918516064332?text=Hello%20Pushpendra%2C%20I%20have%20a%20project%20idea';
+
+  const handleMouseMove = (e) => {
+    const el = panelRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width - 0.5;
+    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    setTilt({ x: py * -8, y: px * 8 });
+  };
+
+  const handleMouseLeave = () => setTilt({ x: 0, y: 0 });
+
   return (
-    <section className="py-12 md:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="grid items-center gap-8 md:gap-12 lg:grid-cols-2">
-          {/* VIDEO PLAYER */}
-          <div className="relative order-1 lg:order-2">
-            <VideoPlayer />
-            <div className="absolute inset-0 -z-10 bg-orange-500/10 blur-3xl rounded-full" />
-          </div>
+    <section className="relative overflow-hidden min-h-screen flex items-center justify-center">
+      {/* Background Video */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover"
+        src="/hero.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        aria-hidden="true"
+      />
 
-          {/* CONTENT */}
-          <div className="text-left order-2 lg:order-1">
-            {/* <span className="inline-block px-4 py-1.5 mb-4 bg-white border-2 border-gray-300 rounded-full text-sm font-medium text-gray-700">
-              One9 Tech · Software Development
-            </span> */}
+      {/* Dark overlay for readability + depth */}
+      {/* <div  
+        className="absolute inset-0"
+        style={{
+          background: isTheme1
+            ? 'radial-gradient(ellipse at center, rgba(7,29,24,0.35) 0%, rgba(7,29,24,0.85) 100%)'
+            : 'radial-gradient(ellipse at center, rgba(244,241,236,0.25) 0%, rgba(244,241,236,0.75) 100%)',
+        }}
+      /> */}
 
-            <h1 className="mb-4 md:mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900">
-              We Build Web &amp; Mobile Apps That{" "}
-              <span className="text-orange-600">Grow Your Business</span>
-            </h1>
+      {/* Floating gradient orbs for 3D depth */}
+     
 
-            <p className="mb-6 md:mb-8 text-base sm:text-lg leading-relaxed text-gray-600">
-              We help startups and growing businesses design, build, and launch
-              powerful digital products — from custom web apps and mobile solutions
-              to AI-powered automation. Complex ideas, delivered simply.
-            </p>
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center px-4">
+        <div
+          ref={panelRef}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          style={{
+            transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+            transition: 'transform 0.15s ease-out',
+          }}
+          className={`flex flex-col sm:flex-row items-center gap-4 sm:gap-6 rounded-3xl px-6 py-8 sm:px-10 sm:py-10 backdrop-blur-xl shadow-2xl ${
+            isTheme1
+              ? 'bg-[#09251F]/50 border border-[#C5AA68]/25'
+              : 'bg-white/60 border border-[#D8D2C9]'
+          }`}
+        >
+          <a
+            href="#works"
+            data-cursor="EXPLORE"
+            className={`group relative inline-flex items-center justify-center gap-2.5 w-full sm:w-auto px-8 py-4 rounded-full text-sm font-sans tracking-widest uppercase font-semibold transition-all duration-300 overflow-hidden ${
+              isTheme1
+                ? 'bg-[#C5AA68] text-[#071D18] hover:bg-[#D8BD7B] shadow-[0_8px_24px_rgba(197,170,104,0.4)] hover:shadow-[0_12px_32px_rgba(197,170,104,0.55)]'
+                : 'bg-[#262522] text-[#F4F1EC] hover:bg-[#3D3A34] shadow-[0_8px_24px_rgba(38,37,34,0.3)] hover:shadow-[0_12px_32px_rgba(38,37,34,0.4)]'
+            } hover:-translate-y-0.5`}
+          >
+            <span>View My Work</span>
+            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </a>
 
-            {/* Proof points */}
-            <ul className="mb-8 space-y-2.5">
-              {proofPoints.map((point) => (
-                <li key={point} className="flex items-center gap-2.5 text-sm text-gray-700">
-                  <CheckCircle2 className="h-4 w-4 text-orange-600 shrink-0" />
-                  {point}
-                </li>
-              ))}
-            </ul>
-
-            {/* CTA BUTTONS */}
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <a
-                href="https://wa.me/918516064332?text=Hello%2C%20I%20have%20a%20project%20idea"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center justify-center gap-2 rounded-md border border-transparent bg-gray-900 px-6 py-3 text-sm font-medium text-white transition hover:bg-gray-800"
-              >
-                Start a Project
-                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5" />
-              </a>
-
-              <a
-                href="#works"
-                className="inline-flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-6 py-3 text-sm font-medium text-gray-800 transition hover:bg-gray-100"
-              >
-                View Our Work
-              </a>
-            </div>
-          </div>
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-cursor="CONTACT"
+            className={`group inline-flex items-center justify-center gap-2.5 w-full sm:w-auto px-8 py-4 rounded-full text-sm font-sans tracking-widest uppercase font-semibold transition-all duration-300 hover:-translate-y-0.5 ${
+              isTheme1
+                ? 'border border-[#C5AA68]/40 text-[#E9E1CC] hover:border-[#C5AA68] hover:bg-[#10332A]/60'
+                : 'border border-[#8B8175]/40 text-[#262522] bg-white/70 hover:bg-white hover:border-[#8B8175]'
+            }`}
+          >
+            <MessageCircle className="w-4 h-4" />
+            <span>Start a Project</span>
+          </a>
         </div>
       </div>
     </section>

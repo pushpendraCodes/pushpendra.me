@@ -1,204 +1,244 @@
 import React from 'react';
-import { Twitter, Linkedin, Github, Instagram, MapPin, Phone, Mail } from 'lucide-react';
+import { Mail, Phone, MapPin, ArrowRight, Github, Instagram } from 'lucide-react';
+import { FaLinkedin, FaWhatsapp } from 'react-icons/fa';
+import { useTheme } from '../context/ThemeContext';
 
-export default function Footer() {
+const Footer = () => {
+  const { isTheme1 } = useTheme();
 
-  const socialLinks = [
-    {
-      icon: Twitter,
-      url: "#",
-    },
-    {
-      icon: Linkedin,
-      url: "https://www.linkedin.com/in/1pushpendrapatel/",
-    },
-    {
-      icon: Github,
-      url: "https://github.com/pushpendraCodes",
-    },
-    {
-      icon: Instagram,
-      url: "https://www.instagram.com/one9.tech",
-    },
-  ];
+  const whatsappUrl = "https://wa.me/918516064332?text=Hello%20Pushpendra%2C%20I%20have%20a%20project%20in%20mind";
+  const emailUrl = "mailto:pushpendracontact8055@gmail.com";
+  const phoneUrl = "tel:+918516064332";
 
   return (
-    <footer className="relative overflow-hidden bg-gradient-to-b from-white to-amber-50 text-gray-800">
+    <footer id="contact" className="relative overflow-hidden pt-12 pb-8 border-t border-inherit">
+      
+      {/* ================= CLOSING EDITORIAL CTA ================= */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-20 lg:mb-28">
+        <div
+          className={`rounded-3xl p-8 sm:p-14 lg:p-20 text-center relative overflow-hidden transition-all duration-300 ${
+            isTheme1
+              ? 'bg-[#09251F] border border-[#C5AA68]/30 shadow-[0_20px_60px_rgba(0,0,0,0.5)]'
+              : 'bg-white border border-[#D8D2C9] shadow-sm'
+          }`}
+        >
+          {/* Subtle gold decoration */}
+          {isTheme1 && (
+            <>
+              <div className="absolute top-6 left-6 text-[#C5AA68]/40 text-sm">✦</div>
+              <div className="absolute top-6 right-6 text-[#C5AA68]/40 text-sm">✦</div>
+              <div className="absolute bottom-6 left-6 text-[#C5AA68]/40 text-sm">✧</div>
+              <div className="absolute bottom-6 right-6 text-[#C5AA68]/40 text-sm">✧</div>
+            </>
+          )}
 
-      {/* Subtle particles (light version) */}
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(40)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute bg-orange-200 rounded-full opacity-40"
-            style={{
-              width: Math.random() * 3 + 1 + 'px',
-              height: Math.random() * 3 + 1 + 'px',
-              top: Math.random() * 100 + '%',
-              left: Math.random() * 100 + '%',
-              animation: `twinkle ${Math.random() * 3 + 2}s infinite ${Math.random() * 2}s`
-            }}
-          />
-        ))}
-      </div>
+          <span
+            className={`text-xs uppercase tracking-[0.25em] font-sans font-medium inline-block mb-4 ${
+              isTheme1 ? 'text-[#C5AA68]' : 'text-[#8B8175]'
+            }`}
+          >
+            HAVE AN IDEA?
+          </span>
 
-      <style>{`
-        @keyframes twinkle {
-          0%, 100% { opacity: 0.2; }
-          50% { opacity: 0.6; }
-        }
-      `}</style>
-
-      <div className="relative z-10">
-
-        {/* CTA Section */}
-        <div className="text-center py-20 px-6">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
-            Ready to Transform Your Business?
+          <h2
+            className={`font-serif text-3xl sm:text-5xl lg:text-7xl tracking-tight leading-[1.08] mb-6 max-w-3xl mx-auto ${
+              isTheme1 ? 'text-[#E9E1CC]' : 'text-[#262522]'
+            }`}
+          >
+            {isTheme1 ? (
+              <>
+                LET'S BUILD <br />
+                <span className=" font-normal text-[#C5AA68]">SOMETHING GREAT.</span>
+              </>
+            ) : (
+              <>
+                LET'S BUILD SOMETHING <br />
+                <span className=" font-normal text-[#8B8175]">MEANINGFUL.</span>
+              </>
+            )}
           </h2>
-          <p className="text-gray-600 text-lg mb-8 max-w-3xl mx-auto">
-            Let's discuss how our IT solutions can drive your business forward. Get a free consultation today.
+
+          <p
+            className={`font-sans text-base sm:text-lg max-w-xl mx-auto leading-relaxed mb-10 ${
+              isTheme1 ? 'text-[#AFAF9D]' : 'text-[#77736D]'
+            }`}
+          >
+            Have a website, SaaS product, e-commerce platform or custom web application in mind?
+            Let's discuss architecture, timelines, and how to bring it into production.
           </p>
 
-          <div className="flex flex-wrap justify-center gap-4">
-            <button className="bg-gray-900 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-800 transition">
-              Get Free Consultation
-            </button>
-
-            <a href="tel:+918516064332">
-              <button className="border-2 border-gray-300 text-gray-800 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
-                Call Us Now
-              </button>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cursor="CHAT"
+              className={`inline-flex items-center gap-2.5 px-8 py-4 rounded-full text-xs font-sans uppercase tracking-widest font-semibold transition-all duration-300 ${
+                isTheme1
+                  ? 'bg-[#C5AA68] text-[#071D18] hover:bg-[#D8BD7B] shadow-[0_4px_20px_rgba(197,170,104,0.4)]'
+                  : 'bg-[#262522] text-[#F4F1EC] hover:bg-[#3D3A34]'
+              }`}
+            >
+              <span>Start a Project</span>
+              <ArrowRight className="w-4 h-4" />
             </a>
 
+            <a
+              href={emailUrl}
+              className={`inline-flex items-center gap-2 px-8 py-4 rounded-full text-xs font-sans uppercase tracking-widest font-semibold transition-colors ${
+                isTheme1
+                  ? 'border border-[#C5AA68]/40 text-[#E9E1CC] hover:bg-[#10332A]'
+                  : 'border border-[#D8D2C9] text-[#262522] hover:bg-[#F4F1EC]'
+              }`}
+            >
+              <span>Get in Touch</span>
+            </a>
+          </div>
+
+          {/* Quick Direct Contacts */}
+          <div className="flex flex-wrap items-center justify-center gap-6 mt-12 pt-8 border-t border-inherit text-xs font-sans">
+            <a
+              href={emailUrl}
+              className={`flex items-center gap-1.5 transition-colors ${
+                isTheme1 ? 'text-[#AFAF9D] hover:text-[#C5AA68]' : 'text-[#77736D] hover:text-[#262522]'
+              }`}
+            >
+              <Mail className="w-3.5 h-3.5 text-[#C5AA68]" />
+              pushpendracontact8055@gmail.com
+            </a>
+
+            <a
+              href={phoneUrl}
+              className={`flex items-center gap-1.5 transition-colors ${
+                isTheme1 ? 'text-[#AFAF9D] hover:text-[#C5AA68]' : 'text-[#77736D] hover:text-[#262522]'
+              }`}
+            >
+              <Phone className="w-3.5 h-3.5 text-[#C5AA68]" />
+              +91 8516064332
+            </a>
+
+            <span
+              className={`flex items-center gap-1.5 ${
+                isTheme1 ? 'text-[#AFAF9D]' : 'text-[#77736D]'
+              }`}
+            >
+              <MapPin className="w-3.5 h-3.5 text-[#C5AA68]" />
+              Rewa, Madhya Pradesh, India
+            </span>
           </div>
         </div>
-
-        {/* Stats */}
-        <div className="border-y border-gray-200 py-16">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-              {[
-                ['10+', 'Projects Completed'],
-                ['10+', 'Happy Clients'],
-                ['4+', 'Years Experience'],
-                ['5+', 'Team Members'],
-              ].map(([value, label]) => (
-                <div key={label}>
-                  <div className="text-5xl md:text-6xl font-bold text-gray-900 mb-2">
-                    {value}
-                  </div>
-                  <div className="text-gray-600">{label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Footer Content */}
-        <div className="max-w-7xl mx-auto px-6 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-
-            {/* Company */}
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                {/* <div className="bg-orange-500 rounded-lg p-2">
-                  <div className="w-6 h-6 bg-white rounded rotate-45"></div>
-                </div> */}
-                <span className="text-xl font-bold text-gray-900">
-                  One9 Tech
-                </span>
-              </div>
-
-              <p className="text-gray-600 text-sm mb-6">
-                We're a design and development agency focused on creating exceptional digital experiences that drive results.
-              </p>
-
-              <div className="flex gap-3">
-                {socialLinks.map(({ icon: Icon, url }, i) => (
-                  <a
-                    key={i}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-white border border-gray-200 p-2.5 rounded-lg hover:bg-gray-100 transition"
-                  >
-                    <Icon className="w-5 h-5 text-gray-700" />
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            {/* Industries */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4 text-gray-900">Industries</h3>
-              <ul className="space-y-3 text-gray-600">
-                {['Healthcare', 'E-commerce', 'Education', 'Finance'].map(i => (
-                  <li key={i}>
-                    <a href="#" className="hover:text-gray-900 transition">
-                      {i}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Services */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4 text-gray-900">Services</h3>
-              <ul className="space-y-3 text-gray-600">
-                {[
-                  'Web Development',
-                  'Mobile App Development',
-                  'UI / UX Design',
-                  'Digital Marketing',
-                  'Cloud Solutions',
-                  'IT Consulting',
-                ].map(s => (
-                  <li key={s}>
-                    <a href="#" className="hover:text-gray-900 transition">
-                      {s}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Contact */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4 text-gray-900">Contact Info</h3>
-              <ul className="space-y-4 text-gray-600">
-                <li className="flex gap-3">
-                  <Mail className="w-5 h-5 text-orange-500 mt-0.5" />
-                  <span>pushpendracontact8055@gmail.com</span>
-                </li>
-                <li className="flex gap-3">
-                  <Phone className="w-5 h-5 text-orange-500 mt-0.5" />
-                  <span>+91 8516064332</span>
-                </li>
-                <li className="flex gap-3">
-                  <MapPin className="w-5 h-5 text-orange-500 mt-0.5" />
-                  <span>Rewa, MP (India)</span>
-                </li>
-              </ul>
-            </div>
-
-          </div>
-        </div>
-
-        {/* Bottom Bar */}
-        <div className="border-t border-gray-200">
-          <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between gap-4 text-sm text-gray-600">
-            <span>© 2025 Pushpendra Patel. All rights reserved.</span>
-            <div className="flex gap-6">
-              <a href="#" className="hover:text-gray-900">Privacy Policy</a>
-              <a href="#" className="hover:text-gray-900">Terms of Service</a>
-              <a href="#" className="hover:text-gray-900">Cookie Policy</a>
-            </div>
-          </div>
-        </div>
-
       </div>
+
+      {/* ================= MINIMAL FOOTER ================= */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="pt-8 border-t border-inherit flex flex-col md:flex-row items-center justify-between gap-6">
+          
+          {/* Left: Brand Identity */}
+          <div className="flex flex-col items-center md:items-start text-center md:text-left">
+            <span
+              className={`font-serif text-xl tracking-wider font-semibold ${
+                isTheme1 ? 'text-[#E9E1CC]' : 'text-[#262522]'
+              }`}
+            >
+              PUSHPENDRA PATEL
+            </span>
+            <span
+              className={`font-sans text-[10px] uppercase tracking-[0.25em] ${
+                isTheme1 ? 'text-[#AFAF9D]' : 'text-[#77736D]'
+              }`}
+            >
+              Full Stack Developer &amp; Founder · One9 Tech
+            </span>
+          </div>
+
+          {/* Center: Navigation Links */}
+          <div className="flex flex-wrap items-center justify-center gap-6 text-xs font-sans uppercase tracking-widest">
+            {['Work', 'About', 'Services', 'Process'].map((item) => (
+              <a
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                className={`transition-colors ${
+                  isTheme1 ? 'text-[#AFAF9D] hover:text-[#C5AA68]' : 'text-[#77736D] hover:text-[#262522]'
+                }`}
+              >
+                {item}
+              </a>
+            ))}
+          </div>
+
+          {/* Right: Social Links */}
+          <div className="flex items-center gap-4">
+            <a
+              href="https://github.com/pushpendraCodes"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+              className={`p-2 rounded-full border transition-colors ${
+                isTheme1
+                  ? 'border-[#C5AA68]/20 text-[#AFAF9D] hover:text-[#C5AA68] hover:border-[#C5AA68]'
+                  : 'border-[#D8D2C9] text-[#77736D] hover:text-[#262522]'
+              }`}
+            >
+              <Github className="w-4 h-4" />
+            </a>
+
+            <a
+              href="https://www.linkedin.com/in/1pushpendrapatel/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              className={`p-2 rounded-full border transition-colors ${
+                isTheme1
+                  ? 'border-[#C5AA68]/20 text-[#AFAF9D] hover:text-[#C5AA68] hover:border-[#C5AA68]'
+                  : 'border-[#D8D2C9] text-[#77736D] hover:text-[#262522]'
+              }`}
+            >
+              <FaLinkedin className="w-4 h-4" />
+            </a>
+
+            <a
+              href="https://www.instagram.com/one9.tech"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className={`p-2 rounded-full border transition-colors ${
+                isTheme1
+                  ? 'border-[#C5AA68]/20 text-[#AFAF9D] hover:text-[#C5AA68] hover:border-[#C5AA68]'
+                  : 'border-[#D8D2C9] text-[#77736D] hover:text-[#262522]'
+              }`}
+            >
+              <Instagram className="w-4 h-4" />
+            </a>
+
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="WhatsApp"
+              className={`p-2 rounded-full border transition-colors ${
+                isTheme1
+                  ? 'border-[#C5AA68]/20 text-[#AFAF9D] hover:text-[#C5AA68] hover:border-[#C5AA68]'
+                  : 'border-[#D8D2C9] text-[#77736D] hover:text-[#262522]'
+              }`}
+            >
+              <FaWhatsapp className="w-4 h-4" />
+            </a>
+          </div>
+        </div>
+
+        {/* Bottom Copyright */}
+        <div className="mt-8 pt-6 border-t border-inherit flex flex-col sm:flex-row items-center justify-between text-[11px] font-sans text-center gap-2">
+          <span className={isTheme1 ? 'text-[#AFAF9D]/60' : 'text-[#77736D]/80'}>
+            © 2026 Pushpendra Patel. All rights reserved.
+          </span>
+          <span className={isTheme1 ? 'text-[#C5AA68]/70' : 'text-[#8B8175]'}>
+            Crafted with Engineering &amp; Luxury Editorial Design.
+          </span>
+        </div>
+      </div>
+
     </footer>
   );
-}
+};
+
+export default Footer;

@@ -1,196 +1,203 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { Compass, FileCode2, Palette, Code, Rocket, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
-export default function HowWeWork1() {
-  const [currentSlide, setCurrentSlide] = useState(0);
+const processSteps = [
+  {
+    number: '01',
+    title: 'DISCOVER',
+    subtitle: 'Scope & Business Objectives',
+    description: 'We unpack your product goals, target demographic, timeline, and functional requirements to establish a razor-sharp specification.',
+    icon: Compass,
+  },
+  {
+    number: '02',
+    title: 'PLAN',
+    subtitle: 'System Architecture & Roadmapping',
+    description: 'Formulating database schemas, selecting the optimal tech stack, designing API contracts, and outlining milestones for delivery.',
+    icon: FileCode2,
+  },
+  {
+    number: '03',
+    title: 'DESIGN',
+    subtitle: 'High-Fidelity UI/UX & Flow',
+    description: 'Crafting modern, accessible, and intuitive interfaces with responsive typography, micro-interactions, and conversion-oriented layouts.',
+    icon: Palette,
+  },
+  {
+    number: '04',
+    title: 'BUILD',
+    subtitle: 'Clean Full-Stack Engineering',
+    description: 'Writing maintainable code across React/Next.js frontend, Node.js backend, robust database pipelines, and third-party API integrations.',
+    icon: Code,
+  },
+  {
+    number: '05',
+    title: 'LAUNCH',
+    subtitle: 'Quality Assurance & Deployment',
+    description: 'End-to-end testing, performance optimization, CI/CD deployment on cloud servers (AWS/Vercel), and dedicated post-launch support.',
+    icon: Rocket,
+  },
+];
 
-  const steps = [
-    {
-      number: "01",
-      title: "Discover &\nDesign",
-      description: "We start by understanding your brand, goals, and audience. Our design team then crafts a clean, user-focused layout that aligns with your vision.",
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop",
-      rotation: "-rotate-3"
-    },
-    {
-      number: "02",
-      title: "Refine &\nDevelop",
-      description: "Our developers bring the design to life — responsive, fast, and built with the latest technologies for flawless performance.",
-      image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=300&fit=crop",
-      rotation: "rotate-2"
-    },
-    {
-      number: "03",
-      title: "Launch &\nGrow",
-      description: "Once everything is tested and approved, we launch your project and ensure everything runs smoothly. Your success is our next milestone.",
-      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=300&fit=crop",
-      rotation: "-rotate-2"
-    }
-  ];
+const whyWorkWithMe = [
+  {
+    title: 'FULL-STACK DELIVERY',
+    description: 'Complete accountability from responsive frontend to backend logic, databases, security, and cloud deployment.',
+  },
+  {
+    title: 'BUSINESS FOCUSED',
+    description: 'Technology selected and constructed directly around quantifiable business objectives, user retention, and ROI.',
+  },
+  {
+    title: 'CLEAN & SCALABLE',
+    description: 'Production-tested modular codebases built to scale gracefully rather than fragile quick fixes.',
+  },
+  {
+    title: 'CLEAR COMMUNICATION',
+    description: 'Consistent sprint updates, live staging previews, and transparent collaboration from day one to launch.',
+  },
+];
 
-  // Auto-play slider on mobile
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % steps.length);
-    }, 4000); // Change slide every 4 seconds
-
-    return () => clearInterval(timer);
-  }, [steps.length]);
+const HowWeWork1 = () => {
+  const { isTheme1 } = useTheme();
 
   return (
-    <div className="min-h-screen border-y border-gray-200 py-10 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-
-        {/* Header Section */}
-        <div className="mb-12 lg:mb-24">
-          <div className="flex justify-center">
-            <span className="inline-block px-5 py-2 bg-white border-2 border-gray-300 rounded-full text-sm font-medium text-gray-700 mb-6 lg:mb-8">
-              How we work
+    <section id="process" className="py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        
+        {/* ================= PROCESS HEADER ================= */}
+        <div className="mb-14 lg:mb-20">
+          <div className="flex items-center gap-2 mb-4">
+            <span
+              className={`text-xs uppercase tracking-[0.25em] font-sans font-medium flex items-center gap-2 ${
+                isTheme1 ? 'text-[#C5AA68]' : 'text-[#77736D]'
+              }`}
+            >
+              <span className="text-[10px]">✦</span>
+              DEVELOPMENT METHODOLOGY
             </span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 text-center lg:text-left">
-            Here's what working together looks like
+          <h2
+            className={`font-serif text-3xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.1] ${
+              isTheme1 ? 'text-[#E9E1CC]' : 'text-[#262522]'
+            }`}
+          >
+            {isTheme1 ? (
+              <>
+                HOW I <br />
+                <span className=" font-normal text-[#C5AA68]">BRING IDEAS TO LIFE.</span>
+              </>
+            ) : (
+              <>
+                HOW I WORK<span className="text-[#8B8175]">.</span>
+              </>
+            )}
           </h2>
-          <p className="text-base lg:text-lg text-gray-600 text-center lg:text-left">
-            Explore our <span className="text-orange-600 font-semibold">Live Projects</span>, collaborate with innovation, and witness success stories from our vibrant portfolio.
-          </p>
         </div>
 
-        {/* Mobile Slider */}
-        <div className="lg:hidden">
-          <div className="relative overflow-hidden">
-            <div
-              className="flex transition-transform duration-500 ease-out"
-              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-            >
-              {steps.map((step) => (
-                <div key={step.number} className="w-full flex-shrink-0 px-4">
-                  <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-gray-200 max-w-sm mx-auto">
-                    {/* Number */}
-                    <div className="text-base font-semibold text-gray-400 mb-3">
-                      {step.number}
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 whitespace-pre-line">
-                      {step.title}
-                    </h3>
-
-                    {/* Image */}
-                    <div className="relative mb-6 rounded-xl overflow-hidden aspect-video shadow-md">
-                      <img
-                        src={step.image}
-                        alt={step.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-gray-600 leading-relaxed text-sm">
-                      {step.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Slider Dots */}
-          <div className="flex justify-center gap-2 mt-8">
-            {steps.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentSlide(index)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  currentSlide === index
-                    ? 'w-8 bg-orange-600'
-                    : 'w-2 bg-gray-300'
+        {/* ================= PROCESS STEPS ================= */}
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-20">
+          {processSteps.map((step) => {
+            const Icon = step.icon;
+            return (
+              <div
+                key={step.number}
+                className={`p-6 sm:p-7 rounded-2xl flex flex-col justify-between transition-all duration-300 ${
+                  isTheme1
+                    ? 'bg-[#09251F]/90 border border-[#C5AA68]/20 hover:border-[#C5AA68] shadow-md hover:-translate-y-1'
+                    : 'bg-white border border-[#D8D2C9] hover:border-[#8B8175] shadow-sm hover:-translate-y-1'
                 }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Desktop Grid */}
-        <div className="hidden lg:block relative">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-8 items-center">
-            {steps.map((step, index) => (
-              <div key={step.number} className="relative flex justify-center">
-                {/* Card with tilt */}
-                <div className={`bg-white rounded-3xl p-8 shadow-xl border-2 border-gray-200 w-full max-w-sm transition-transform duration-300 hover:scale-105 ${step.rotation}`}>
-                  {/* Number */}
-                  <div className="text-base font-semibold text-gray-400 mb-3">
-                    {step.number}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="font-serif text-2xl sm:text-3xl font-bold text-[#C5AA68]">
+                      {step.number}
+                    </span>
+                    <div className={`p-2 rounded-full border ${isTheme1 ? 'border-[#C5AA68]/20 text-[#C5AA68]' : 'border-[#D8D2C9] text-[#262522]'}`}>
+                      <Icon className="w-4 h-4" />
+                    </div>
                   </div>
 
-                  {/* Title */}
-                  <h3 className="text-3xl font-bold text-gray-900 mb-6 whitespace-pre-line">
+                  <h3
+                    className={`font-serif text-xl font-bold mb-1 ${
+                      isTheme1 ? 'text-[#E9E1CC]' : 'text-[#262522]'
+                    }`}
+                  >
                     {step.title}
                   </h3>
 
-                  {/* Image */}
-                  <div className="relative mb-6 rounded-xl overflow-hidden aspect-video shadow-md">
-                    <img
-                      src={step.image}
-                      alt={step.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+                  <p className="text-[10px] font-sans uppercase tracking-widest text-[#C5AA68] mb-4">
+                    {step.subtitle}
+                  </p>
 
-                  {/* Description */}
-                  <p className="text-gray-600 leading-relaxed text-sm">
+                  <p
+                    className={`font-sans text-xs leading-relaxed ${
+                      isTheme1 ? 'text-[#AFAF9D]' : 'text-[#77736D]'
+                    }`}
+                  >
                     {step.description}
                   </p>
                 </div>
+              </div>
+            );
+          })}
+        </div>
 
-                {/* Curved Arrow SVG between cards */}
-                {index < steps.length - 1 && (
-                  <div className="hidden lg:block absolute top-1/4 -right-10 w-32 h-32 pointer-events-none">
-                    <svg viewBox="0 0 100 100" className="w-full h-full">
-                      {index === 0 ? (
-                        <>
-                          <path
-                            d="M 10 30 Q 50 50, 90 35"
-                            fill="none"
-                            stroke="#3B82F6"
-                            strokeWidth="3"
-                            className="animate-pulse"
-                          />
-                          <path
-                            d="M 90 35 L 85 30 M 90 35 L 85 40"
-                            fill="none"
-                            stroke="#3B82F6"
-                            strokeWidth="3"
-                            strokeLinecap="round"
-                          />
-                        </>
-                      ) : (
-                        <>
-                          <path
-                            d="M 10 70 Q 50 50, 90 65"
-                            fill="none"
-                            stroke="#3B82F6"
-                            strokeWidth="3"
-                            className="animate-pulse"
-                          />
-                          <path
-                            d="M 90 65 L 85 60 M 90 65 L 85 70"
-                            fill="none"
-                            stroke="#3B82F6"
-                            strokeWidth="3"
-                            strokeLinecap="round"
-                          />
-                        </>
-                      )}
-                    </svg>
-                  </div>
-                )}
+        {/* ================= WHY WORK WITH ME ================= */}
+        <div
+          className={`rounded-3xl p-8 sm:p-12 transition-all duration-300 ${
+            isTheme1
+              ? 'bg-[#10332A]/70 border border-[#C5AA68]/25 shadow-xl'
+              : 'bg-[#E9E4DD]/60 border border-[#D8D2C9] shadow-sm'
+          }`}
+        >
+          <div className="max-w-xl mb-8">
+            <span
+              className={`text-xs uppercase tracking-[0.25em] font-sans font-semibold block mb-2 ${
+                isTheme1 ? 'text-[#C5AA68]' : 'text-[#8B8175]'
+              }`}
+            >
+              VALUE PROPOSITION
+            </span>
+            <h3
+              className={`font-serif text-2xl sm:text-4xl font-semibold tracking-tight ${
+                isTheme1 ? 'text-[#E9E1CC]' : 'text-[#262522]'
+              }`}
+            >
+              Why Work With Me
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {whyWorkWithMe.map((item, idx) => (
+              <div key={item.title} className="flex flex-col text-left">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="font-mono text-xs text-[#C5AA68]">0{idx + 1}.</span>
+                  <h4
+                    className={`font-sans text-xs uppercase tracking-wider font-bold ${
+                      isTheme1 ? 'text-[#E9E1CC]' : 'text-[#262522]'
+                    }`}
+                  >
+                    {item.title}
+                  </h4>
+                </div>
+                <p
+                  className={`font-sans text-xs sm:text-sm leading-relaxed ${
+                    isTheme1 ? 'text-[#AFAF9D]' : 'text-[#77736D]'
+                  }`}
+                >
+                  {item.description}
+                </p>
               </div>
             ))}
           </div>
         </div>
+
       </div>
-    </div>
+    </section>
   );
-}
+};
+
+export default HowWeWork1;

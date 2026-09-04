@@ -1,35 +1,49 @@
+import React, { useEffect } from 'react';
+import { ThemeProvider, useTheme } from './context/ThemeContext';
+import Home from './components/Home';
+import Navbar from './components/Navbar';
+import CustomCursor from './components/CustomCursor';
 
-import { useEffect } from "react";
-import Home from "./components/Home";
-import Navbar from "./components/Navbar";
-const services = [
-  "Software",
-  "Web App",
-  "UI / UX",
-  "Mobile App",
-  "SaaS",
-  "Custom Software",
-  "Cloud Solutions",
-  "AI Automation",
+const roles = [
+  'Full Stack Developer',
+  'SaaS Architect',
+  'UI/UX Engineering',
+  'Next.js & React Expert',
+  'Custom Software',
 ];
 
- function App() {
+function MainLayout() {
+  const { isTheme1 } = useTheme();
+
+  return (
+    <div
+      className={`min-h-screen transition-colors duration-500 overflow-x-hidden ${
+        isTheme1 ? 'bg-[#071D18] text-[#E9E1CC]' : 'bg-[#F4F1EC] text-[#262522]'
+      }`}
+    >
+      <CustomCursor />
+      <Navbar />
+      <Home />
+    </div>
+  );
+}
+
+function App() {
   useEffect(() => {
     let index = 0;
-
     const interval = setInterval(() => {
-      document.title = `Pushpendra Patel | ${services[index]}`;
-      index = (index + 1) % services.length;
-    }, 2000); // change every 2 seconds
+      document.title = `Pushpendra Patel — ${roles[index]}`;
+      index = (index + 1) % roles.length;
+    }, 3000);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-   <div className="bg-gradient-to-br from-white via-amber-50 to-amber-100">
-     <Navbar />
-      <Home />
-   </div>
+    <ThemeProvider>
+      <MainLayout />
+    </ThemeProvider>
   );
 }
+
 export default App;

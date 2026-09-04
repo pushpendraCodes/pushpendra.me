@@ -1,17 +1,18 @@
 import React from 'react';
 import Hero from './Hero';
 import About from './About';
-import HowWeWork1 from './HowWeWork1';
-import TechFlowchart from './TechFlowchart';
 import ServicesSection from './ServicesSection';
-import Footer from './Footer';
-import TestimonialCarousel from './TestimonialCarousel';
 import ClientProjects from './ClientProjects';
+import TechStack from './TechStack';
+import ExperienceTimeline from './ExperienceTimeline';
+import HowWeWork1 from './HowWeWork1';
+import TestimonialCarousel from './TestimonialCarousel';
+import Footer from './Footer';
 import ScrollReveal from './ScrollReveal';
 
 const Home = () => {
   return (
-    <div>
+    <main className="relative">
       <ScrollReveal>
         <Hero />
       </ScrollReveal>
@@ -21,19 +22,23 @@ const Home = () => {
       </ScrollReveal>
 
       <ScrollReveal>
-        <HowWeWork1 />
+        <ServicesSection />
       </ScrollReveal>
 
       <ScrollReveal>
         <ClientProjects />
       </ScrollReveal>
 
-      {/* <ScrollReveal>
-        <TechFlowchart />
+      <ScrollReveal>
+        <TechStack />
+      </ScrollReveal>
+{/* 
+      <ScrollReveal>
+        <ExperienceTimeline />
       </ScrollReveal> */}
 
       <ScrollReveal>
-        <ServicesSection />
+        <HowWeWork1 />
       </ScrollReveal>
 
       <ScrollReveal>
@@ -43,7 +48,7 @@ const Home = () => {
       <ScrollReveal>
         <Footer />
       </ScrollReveal>
-    </div>
+    </main>
   );
 };
 

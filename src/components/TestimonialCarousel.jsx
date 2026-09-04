@@ -1,192 +1,198 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
-export default function TestimonialCarousel() {
-  const scrollRef = useRef(null);
-  const [isMobile, setIsMobile] = useState(false);
+const testimonials = [
+  {
+    company: 'Bagherwal Samaj Trust',
+    logo: 'https://res.cloudinary.com/dbj8skjba/image/upload/v1761631407/file_tmvx2y.jpg',
+    text: 'Bagherwal Samaj Trust is highly satisfied with the services provided. Pushpendra was professional, responsive, and delivered quality work beyond expectations. Highly recommended.',
+    author: 'Ninad NandGaonakar',
+    position: 'President',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Ninad',
+  },
+  {
+    company: 'Icchhapurti',
+    logo: 'https://icchhapurti.com/logo-black.png',
+    text: 'The Icchhapurti e-commerce platform was delivered exactly as required. Professional team, smooth execution, and excellent ongoing technical support.',
+    author: 'Puneet Jain',
+    position: 'Owner',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Puneet',
+  },
+  {
+    company: 'FarmHouse Kitchen',
+    logo: 'https://farmhouse-kitchen-website-frontend.vercel.app/logo.jpg',
+    text: 'A professional developer with a clear understanding of hospitality and consumer restaurant workflows. The final result and performance exceeded our expectations.',
+    author: 'FarmHouse Kitchen Leadership',
+    position: 'Owner & Managing Director',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=FarmHouse',
+  },
+  {
+    company: 'Maa Anusaya Urban',
+    logo: 'https://banking-frontend-webiste.vercel.app/assets/logo2-Bvw1hDGd.png',
+    text: 'Maa Anusaya Urban appreciates the quality services and technical support provided. Structured approach, timely execution, and commitment to software excellence.',
+    author: 'Maa Anusaya Urban',
+    position: 'Executive Board',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=MaaAnusaya',
+  },
+];
+
+const TestimonialCarousel = () => {
+  const { isTheme1 } = useTheme();
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const testimonials = [
-    {
-      company: "Bagherwal Samaj Trust",
-      logo: "https://res.cloudinary.com/dbj8skjba/image/upload/v1761631407/file_tmvx2y.jpg",
-      text: "Bagherwal Samaj Trust is highly satisfied with the services provided. The team was professional, responsive, and delivered quality work beyond expectations. Highly recommended.",
-      author: "Ninad NandGaonakar",
-      position: "President",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Leo"
-    },
-    {
-      company: "Icchhapurti",
-      logo: "https://icchhapurti.com/logo-black.png",
-      text: "The Ichhapurti platform was delivered exactly as required. Professional team, smooth execution, and excellent support.",
-      author: "Puneet Jain",
-      position: "Owner",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Leo"
-    },
-    {
-      company: "FarmHouse Kitchen",
-      logo: "https://farmhouse-kitchen-website-frontend.vercel.app/logo.jpg",
-      text: "Professional team with a clear understanding of restaurant needs. The final result exceeded our expectations..",
-      author: "FarmHouse Kitchen",
-      position: "Owner",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Leo"
-    },
-    {
-      company: "Maa Anusaya Urban",
-      logo: "https://banking-frontend-webiste.vercel.app/assets/logo2-Bvw1hDGd.png",
-      text: "Ma Anusaya Urban appreciates the quality services and technical support provided by the company. Their structured approach, timely execution, and commitment to excellence ensured successful implementation of our requirements.",
-      author: "Maa Anusaya Urban",
-      position: "Owner",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Leo"
-    },
-  ];
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : testimonials.length - 1));
+  };
 
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Auto-scroll for mobile
-  useEffect(() => {
-    if (!isMobile) return;
-    
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-    }, 4000);
-    
-    return () => clearInterval(interval);
-  }, [isMobile, testimonials.length]);
-
-  // Continuous scroll for desktop
-  useEffect(() => {
-    if (isMobile) return;
-    
-    const scrollContainer = scrollRef.current;
-    if (!scrollContainer) return;
-
-    let scrollAmount = 0;
-    const scrollSpeed = 0.5;
-
-    const scroll = () => {
-      scrollAmount += scrollSpeed;
-      scrollContainer.scrollLeft = scrollAmount;
-
-      if (scrollAmount >= scrollContainer.scrollWidth / 2) {
-        scrollAmount = 0;
-      }
-
-      requestAnimationFrame(scroll);
-    };
-
-    const animationId = requestAnimationFrame(scroll);
-    return () => cancelAnimationFrame(animationId);
-  }, [isMobile]);
-
-  const TestimonialCard = ({ testimonial }) => (
-    <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
-      <div className="flex items-center gap-2 mb-6">
-        <img className='w-10 h-10 rounded-full object-cover' src={testimonial.logo} alt="logo" />
-        <span className="font-bold text-lg text-gray-900">{testimonial.company}</span>
-      </div>
-
-      <p className="text-gray-700 leading-relaxed mb-8">
-        {testimonial.text}
-      </p>
-
-      <div className="flex items-center gap-3 pt-6 border-t border-gray-100">
-        <img 
-          src={testimonial.avatar} 
-          alt={testimonial.author}
-          className="w-12 h-12 rounded-full bg-gray-100"
-        />
-        <div>
-          <div className="font-semibold text-gray-900">{testimonial.author}</div>
-          <div className="text-sm text-gray-500">{testimonial.position}</div>
-        </div>
-      </div>
-    </div>
-  );
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev < testimonials.length - 1 ? prev + 1 : 0));
+  };
 
   return (
-    <div className="border-t border-gray-200 py-10 px-4 overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 mb-6 shadow-sm">
-            <div className="flex -space-x-2">
-              <img 
-                src="https://api.dicebear.com/7.x/avataaars/svg?seed=leader1" 
-                alt="Leader" 
-                className="w-6 h-6 rounded-full border-2 border-white"
-              />
-              <img 
-                src="https://api.dicebear.com/7.x/avataaars/svg?seed=leader2" 
-                alt="Leader" 
-                className="w-6 h-6 rounded-full border-2 border-white"
-              />
-              <img 
-                src="https://api.dicebear.com/7.x/avataaars/svg?seed=leader3" 
-                alt="Leader" 
-                className="w-6 h-6 rounded-full border-2 border-white"
-              />
-            </div>
-            <span className="text-sm font-medium text-gray-700">Trusted by Clients</span>
-          </div>
-          
-          <h2 className="text-3xl md:text-6xl font-bold text-gray-900">
-            Feedback that speaks for itself
-          </h2>
-        </div>
-
-        {/* Mobile Slider */}
-        <div className="md:hidden">
-          <div className="relative overflow-hidden">
-            <div 
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+    <section className="py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        
+        {/* Section Header */}
+        <div className="mb-14 lg:mb-20">
+          <div className="flex items-center gap-2 mb-4">
+            <span
+              className={`text-xs uppercase tracking-[0.25em] font-sans font-medium flex items-center gap-2 ${
+                isTheme1 ? 'text-[#C5AA68]' : 'text-[#77736D]'
+              }`}
             >
-              {testimonials.map((testimonial, index) => (
-                <div key={index} className="w-full flex-shrink-0 px-4">
-                  <TestimonialCard testimonial={testimonial} />
-                </div>
-              ))}
-            </div>
+              <span className="text-[10px]">✦</span>
+              CLIENT TESTIMONIALS
+            </span>
           </div>
-          
-          <div className="flex justify-center gap-2 mt-4">
-            {testimonials.map((_, index) => (
+
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+            <h2
+              className={`font-serif text-3xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.1] ${
+                isTheme1 ? 'text-[#E9E1CC]' : 'text-[#262522]'
+              }`}
+            >
+              {isTheme1 ? (
+                <>
+                  KIND WORDS <br />
+                  <span className=" font-normal text-[#C5AA68]">FROM CLIENTS.</span>
+                </>
+              ) : (
+                <>
+                  FEEDBACK<span className="text-[#8B8175]">.</span>
+                </>
+              )}
+            </h2>
+
+            {/* Navigation Arrows */}
+            <div className="flex items-center gap-3">
               <button
-                key={index}
-                onClick={() => setCurrentIndex(index)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  index === currentIndex ? 'w-8 bg-blue-600' : 'w-2 bg-gray-300'
+                type="button"
+                onClick={handlePrev}
+                aria-label="Previous Testimonial"
+                className={`w-11 h-11 rounded-full border flex items-center justify-center transition-all ${
+                  isTheme1
+                    ? 'border-[#C5AA68]/30 text-[#C5AA68] hover:bg-[#10332A] hover:border-[#C5AA68]'
+                    : 'border-[#D8D2C9] text-[#262522] hover:bg-white'
                 }`}
-              />
-            ))}
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                type="button"
+                onClick={handleNext}
+                aria-label="Next Testimonial"
+                className={`w-11 h-11 rounded-full border flex items-center justify-center transition-all ${
+                  isTheme1
+                    ? 'border-[#C5AA68]/30 text-[#C5AA68] hover:bg-[#10332A] hover:border-[#C5AA68]'
+                    : 'border-[#D8D2C9] text-[#262522] hover:bg-white'
+                }`}
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Desktop Continuous Scroll */}
-        <div className="hidden md:block relative">
-          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
-          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
-          
-          <div 
-            ref={scrollRef}
-            className="flex gap-6 overflow-x-hidden"
-            style={{ scrollBehavior: 'auto' }}
-          >
-            {[...testimonials, ...testimonials].map((testimonial, index) => (
-              <div key={index} className="flex-shrink-0 w-[350px]">
-                <TestimonialCard testimonial={testimonial} />
+        {/* Testimonials Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {testimonials.map((item, idx) => (
+            <div
+              key={item.company}
+              className={`p-8 sm:p-10 rounded-3xl flex flex-col justify-between transition-all duration-300 ${
+                isTheme1
+                  ? 'bg-[#09251F]/90 border border-[#C5AA68]/20 hover:border-[#C5AA68]/40 shadow-lg'
+                  : 'bg-white border border-[#D8D2C9] hover:border-[#8B8175] shadow-sm'
+              }`}
+            >
+              <div>
+                {/* Quotation Mark & Company Logo */}
+                <div className="flex items-center justify-between mb-8">
+                  <span
+                    className={`font-serif text-5xl leading-none select-none ${
+                      isTheme1 ? 'text-[#C5AA68]' : 'text-[#8B8175]'
+                    }`}
+                  >
+                    “
+                  </span>
+
+                  <div className="flex items-center gap-2.5">
+                    <img
+                      src={item.logo}
+                      alt={item.company}
+                      className="w-9 h-9 rounded-full object-cover border border-inherit"
+                    />
+                    <span
+                      className={`text-xs font-sans uppercase tracking-widest font-semibold ${
+                        isTheme1 ? 'text-[#E9E1CC]' : 'text-[#262522]'
+                      }`}
+                    >
+                      {item.company}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Quote Body */}
+                <p
+                  className={`font-serif text-lg sm:text-xl leading-relaxed italic mb-8 ${
+                    isTheme1 ? 'text-[#E9E1CC]' : 'text-[#262522]'
+                  }`}
+                >
+                  "{item.text}"
+                </p>
               </div>
-            ))}
-          </div>
+
+              {/* Author Info */}
+              <div className="pt-6 border-t border-inherit flex items-center gap-3.5">
+                <img
+                  src={item.avatar}
+                  alt={item.author}
+                  className="w-11 h-11 rounded-full bg-gray-800"
+                />
+                <div>
+                  <h4
+                    className={`text-sm font-sans font-semibold tracking-wide ${
+                      isTheme1 ? 'text-[#E9E1CC]' : 'text-[#262522]'
+                    }`}
+                  >
+                    {item.author}
+                  </h4>
+                  <p
+                    className={`text-xs font-sans ${
+                      isTheme1 ? 'text-[#AFAF9D]' : 'text-[#77736D]'
+                    }`}
+                  >
+                    {item.position} · {item.company}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
+
       </div>
-    </div>
+    </section>
   );
-}
+};
+
+export default TestimonialCarousel;

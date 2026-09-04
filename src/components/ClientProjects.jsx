@@ -1,294 +1,477 @@
-import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { ArrowUpRight, ArrowRight } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+
+const projects = [
+  {
+    number: '01',
+    title: 'Review QR',
+    status: 'Live Production',
+    category: 'SaaS Platform / AI Marketing',
+    year: '2026',
+    role: 'Lead Architect & Full Stack Developer',
+    description: 'An AI-powered Google Review QR management platform engineered for businesses to collect, analyze, and boost authenticated 5-star customer reviews at scale.',
+    image: '/projectsThumbnails/thumbnail5.png',
+    technologies: ['Next.js', 'TailwindCSS', 'Node.js', 'AI Workflows', 'MongoDB'],
+    link: 'https://www.getreviewqr.com/',
+    featured: true,
+  },
+  {
+    number: '02',
+    title: 'Dil Se Dil Tak',
+    status: 'Live Production',
+    category: 'Social / Real-Time Communication',
+    year: '2025',
+    role: 'Full Stack Engineer',
+    description: 'Interactive real-time communication platform incorporating high-fidelity live video calling, voice channels, and synchronous social gaming modules.',
+    image: '/projectsThumbnails/thumbnail7.jpeg',
+    technologies: ['React', 'Next.js', 'Agora SDK', 'Node.js', 'TailwindCSS', 'MongoDB'],
+    link: 'https://dilsee.com',
+    featured: true,
+  },
+  {
+    number: '03',
+    title: 'Shri Bagherwal Samaj Sahayata',
+    status: 'Live Production',
+    category: 'Social Welfare & Community Portal',
+    year: '2025',
+    role: 'Full Stack Developer',
+    description: 'A dedicated community assistance portal with automated WhatsApp messaging APIs, member directory, verification workflows, and donation processing.',
+    image: '/projectsThumbnails/thumbnail1.jpg',
+    technologies: ['React', 'Node.js', 'WhatsApp API', 'MongoDB', 'Express'],
+    link: 'https://bagherwaljaindp.com',
+    featured: false,
+  },
+  {
+    number: '04',
+    title: 'Icchhapurti',
+    status: 'Live Production',
+    category: 'E-Commerce Platform',
+    year: '2025',
+    role: 'Full Stack Developer',
+    description: 'Bespoke modern e-commerce storefront for an artisanal product brand, equipped with seamless checkout, payment integration, and dynamic order fulfillment.',
+    image: '/projectsThumbnails/thumbnail2.jpg',
+    technologies: ['React', 'Node.js', 'Razorpay', 'MongoDB', 'TailwindCSS'],
+    link: 'https://icchhapurti.com/',
+    featured: false,
+  },
+  {
+    number: '05',
+    title: 'FarmHouse Kitchen',
+    status: 'Live Production',
+    category: 'Food & Hospitality Platform',
+    year: '2024',
+    role: 'Frontend & Backend Developer',
+    description: 'Curated culinary web application showcasing restaurant menus, table reservations, and seamless online food ordering for customers.',
+    image: '/projectsThumbnails/thumbnail3.jpg',
+    technologies: ['React', 'Node.js', 'MongoDB', 'TailwindCSS'],
+    link: 'https://farmhouse-kitchen-website.vercel.app/',
+    featured: false,
+  },
+  {
+    number: '06',
+    title: 'Optech Computer Institute',
+    status: 'Live Production',
+    category: 'Education & Student Portal',
+    year: '2024',
+    role: 'Frontend Engineer',
+    description: 'Clean digital education portal for a regional technical institute, facilitating student curriculum access, admission inquiries, and course catalogs.',
+    image: '/projectsThumbnails/thumbnail6.png',
+    technologies: ['React', 'TailwindCSS', 'Vite'],
+    link: 'https://optech-website.vercel.app/',
+    featured: false,
+  },
+];
+
+// Reusable 3D tilt + light-sheen wrapper, shared across every card variant below.
+const TiltCard = ({ children, className = '', maxTilt = 6, style = {} }) => {
+  const ref = useRef(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [glow, setGlow] = useState({ x: 50, y: 50, opacity: 0 });
+
+  const handleMouseMove = (e) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
+    setTilt({ x: (py - 0.5) * -maxTilt, y: (px - 0.5) * maxTilt });
+    setGlow({ x: px * 100, y: py * 100, opacity: 1 });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+    setGlow((prev) => ({ ...prev, opacity: 0 }));
+  };
+
+  return (
+    <div style={{ perspective: '1400px' }}>
+      <div
+        ref={ref}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+          transition: 'transform 0.25s cubic-bezier(0.22,1,0.36,1)',
+          transformStyle: 'preserve-3d',
+          ...style,
+        }}
+        className={className}
+      >
+        {children}
+        <div
+          className="absolute inset-0 pointer-events-none rounded-[inherit] transition-opacity duration-300"
+          style={{
+            opacity: glow.opacity * 0.12,
+            background: `radial-gradient(circle at ${glow.x}% ${glow.y}%, rgba(255,255,255,0.9), transparent 55%)`,
+          }}
+        />
+      </div>
+    </div>
+  );
+};
 
 const ClientProjects = () => {
-    const [currentIndex, setCurrentIndex] = useState(0);
+  const { isTheme1 } = useTheme();
+  const [filter, setFilter] = useState('ALL');
 
-    const projects = [
-        {
-            title: "Dil Se Dil Tak",
-            status: "Live",
-            description: "Dil Se Dil Tak - Chat , Call , Game",
-            image: "./projectsThumbnails/thumbnail7.jpeg",
-            technologies: ["React", "Node.js", "Next.js", "TailwindCSS", "MongoDB", "Agora SDK"],
-            link: "https://dilsee.com",
-            category: "Chat , Call , Game"
-        },
-        {
-            title: "Shri Bagherwal Samaj Sahayata",
-            status: "Live",
-            description: "Shri Bagherwal Samaj Sahayata Trust",
-            image: "./projectsThumbnails/thumbnail1.jpg",
-            technologies: ["React", "Node.js", "MongoDB", "whatsapp API"],
-            link: "https://bagherwaljaindp.com",
-            category: "Social"
-        },
-        {
-            title: "Icchhapurti",
-            status: "Live",
-            description: "Icchhapurti- A Manifestion Pen",
-            image: "/projectsThumbnails/thumbnail2.jpg",
-            technologies: ["React", "Node.js", "MongoDB"],
-            link: "https://icchhapurti.com/",
-            category: "E-Commerce"
-        },
-        {
-            title: "Review QR",
-            status: "Live",
-            description: "Review QR- A QR Code based review platform",
-            image: "/projectsThumbnails/thumbnail5.png",
-            technologies: ["Next js", "tailwindcss", "Javascript", "Nodejs", "Ai"],
-            link: "https://www.getreviewqr.com/",
-            category: "Marketing"
-        },
-        {
-            title: "FarmHouse Kitchen",
-            status: "Live",
-            description: " FarmHouse Kitchen - Secure Enjoy Your Delicious  Food",
-            image: "/projectsThumbnails/thumbnail3.jpg",
-            technologies: ["React", "Node.js", "MongoDB"],
-            link: "https://farmhouse-kitchen-website.vercel.app/",
-            category: "Food"
-        },
-        
-        {
-            title: "Optech Computer Institute",
-            status: "Live",
-            description: "Optech Computer Institute - A Computer Education  Institute",
-            image: "/projectsThumbnails/thumbnail6.png",
-            technologies: ["React"],
-            link: "https://optech-website.vercel.app/",
-            category: "Education"
-        }
-    ];
+  const filteredProjects =
+    filter === 'ALL'
+      ? projects
+      : filter === 'SAAS'
+      ? projects.filter((p) => p.category.includes('SaaS') || p.category.includes('Social'))
+      : projects.filter(
+          (p) =>
+            p.category.includes('E-Commerce') ||
+            p.category.includes('Food') ||
+            p.category.includes('Education')
+        );
 
-    const itemsPerView = 3;
-    const maxIndex = Math.ceil(projects.length / itemsPerView) - 1;
-    const mobileMaxIndex = projects.length - 1;
+  return (
+    <section id="works" className="py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-    // Auto-play slider on mobile
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrentIndex((prev) => {
-                // Check if we're on mobile (will update on every interval)
-                const isMobile = window.innerWidth < 1024;
-                const max = isMobile ? mobileMaxIndex : maxIndex;
-                return prev < max ? prev + 1 : 0;
-            });
-        }, 4000); // Change slide every 4 seconds
+        {/* ================= SECTION HEADER ================= */}
+        <div className="mb-14 lg:mb-20">
+          <div className="flex items-center gap-2 mb-4">
+            <span
+              className={`text-xs uppercase tracking-[0.25em] font-sans font-medium flex items-center gap-2 ${
+                isTheme1 ? 'text-[#C5AA68]' : 'text-[#77736D]'
+              }`}
+            >
+              <span className="text-[10px]">✦</span>
+              PORTFOLIO ARCHIVE
+            </span>
+          </div>
 
-        return () => clearInterval(timer);
-    }, [maxIndex, mobileMaxIndex]);
-
-    const handlePrev = () => {
-        const isMobile = window.innerWidth < 1024;
-        const max = isMobile ? mobileMaxIndex : maxIndex;
-        setCurrentIndex((prev) => (prev > 0 ? prev - 1 : max));
-    };
-
-    const handleNext = () => {
-        const isMobile = window.innerWidth < 1024;
-        const max = isMobile ? mobileMaxIndex : maxIndex;
-        setCurrentIndex((prev) => (prev < max ? prev + 1 : 0));
-    };
-
-    const visibleProjects = projects.slice(
-        currentIndex * itemsPerView,
-        (currentIndex + 1) * itemsPerView
-    );
-
-    return (
-        <section id='works' className="py-12 lg:py-20">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6">
-                {/* Header */}
-                <div className="mb-12 lg:mb-24">
-                    <div className="flex justify-center">
-                        <span className="inline-block px-5 py-2 bg-white border-2 border-gray-300 rounded-full text-sm font-medium text-gray-700 mb-6 lg:mb-8">
-                            Our Projects
-                        </span>
-                    </div>
-
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 text-center lg:text-left">
-                        Our Clients Projects
-                    </h2>
-                    <p className="text-base lg:text-lg text-gray-600 text-center lg:text-left">
-                        Explore our <span className="text-orange-600 font-semibold">Live Projects</span>, collaborate with innovation, and witness success stories from our vibrant portfolio.
-                    </p>
-                </div>
-
-                {/* Mobile Slider */}
-                <div className="lg:hidden mb-8">
-                    <div className="relative overflow-hidden">
-                        <div
-                            className="flex transition-transform duration-500 ease-out"
-                            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-                        >
-                            {projects.map((project, index) => (
-                                <div key={index} className="w-full flex-shrink-0 px-2">
-                                    <div className="bg-white rounded-2xl shadow-md overflow-hidden">
-                                        <div className="p-4 sm:p-6">
-                                            {/* Live Badge */}
-                                            <div className="flex items-center gap-2 mb-4">
-                                                <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-                                                <span className="text-sm font-medium text-gray-600">{project.status}</span>
-                                            </div>
-
-                                            {/* Project Title */}
-                                            <h3 className="text-xl sm:text-2xl font-bold mb-2" style={{ color: '#8B4513' }}>
-                                                {project.title}
-                                            </h3>
-
-                                            {/* Project Image */}
-                                            <div className="relative rounded-xl overflow-hidden mb-4 aspect-video">
-                                                <img
-                                                    src={project.image}
-                                                    alt={project.title}
-                                                    className="w-full h-full object-contain"
-                                                />
-                                            </div>
-
-                                            {/* Description */}
-                                            <p className="text-gray-600 text-sm mb-4">{project.description}</p>
-
-                                            {/* Technologies */}
-                                            <div className="flex flex-wrap gap-2 mb-4">
-                                                {project.technologies.map((tech, idx) => (
-                                                    <span
-                                                        key={idx}
-                                                        className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium"
-                                                    >
-                                                        {tech}
-                                                    </span>
-                                                ))}
-                                            </div>
-
-                                            {/* Category and Link */}
-                                            <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                                                <span className="inline-block bg-amber-100 px-4 py-1 text-xs font-semibold tracking-wider uppercase">
-                                                    {project.category}
-                                                </span>
-                                                <a
-                                                    href={project.link}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="text-orange-600 hover:text-orange-700 flex items-center gap-1 text-sm font-medium"
-                                                >
-                                                    Visit <ExternalLink className="h-4 w-4" />
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
-                {/* Desktop Grid */}
-                <div className="hidden lg:block">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                        {visibleProjects.map((project, index) => (
-                            <div
-                                key={index}
-                                className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group"
-                            >
-                                <div className="p-4">
-                                    {/* Live Badge */}
-                                    <div className="flex items-center gap-2 mb-4">
-                                        <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-                                        <span className="text-sm font-medium text-gray-600">{project.status}</span>
-                                    </div>
-
-                                    {/* Project Title */}
-                                    <h3 className="text-2xl font-bold text-gray-900 mb-2" style={{ color: '#8B4513' }}>
-                                        {project.title}
-                                    </h3>
-
-                                    {/* Project Image */}
-                                    <div className="relative rounded-xl overflow-hidden mb-4 aspect-video">
-                                        <img
-                                            src={project.image}
-                                            alt={project.title}
-                                            className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
-                                        />
-                                        {/* Visit Website Button Overlay */}
-                                        <a
-                                            href={project.link}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-60 flex items-center justify-center transition-all duration-300"
-                                        >
-                                            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:scale-100 scale-90">
-                                                <button className="bg-white text-gray-900 px-6 py-3 rounded-full font-semibold flex items-center gap-2 hover:bg-gray-100">
-                                                    <ExternalLink className="h-5 w-5" />
-                                                    Visit Website
-                                                </button>
-                                            </div>
-                                        </a>
-                                    </div>
-
-                                    {/* Description */}
-                                    <p className="text-gray-600 text-sm mb-4">{project.description}</p>
-
-                                    {/* Technologies */}
-                                    <div className="flex flex-wrap gap-2 mb-4">
-                                        {project.technologies.map((tech, idx) => (
-                                            <span
-                                                key={idx}
-                                                className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium"
-                                            >
-                                                {tech}
-                                            </span>
-                                        ))}
-                                    </div>
-
-                                    {/* Category Label */}
-                                    <div className="pt-4 border-t border-gray-100">
-                                        <span className="inline-block bg-amber-100 px-4 py-1 text-xs font-semibold tracking-wider uppercase">
-                                            {project.category}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* Navigation Arrows - Desktop Only */}
-                    <div className="flex justify-end items-center gap-3">
-                        <button
-                            onClick={handlePrev}
-                            className="w-12 h-12 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 group"
-                            aria-label="Previous projects"
-                        >
-                            <ChevronLeft className="h-6 w-6 text-gray-600 group-hover:text-gray-900" />
-                        </button>
-                        <button
-                            onClick={handleNext}
-                            className="w-12 h-12 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 group"
-                            aria-label="Next projects"
-                        >
-                            <ChevronRight className="h-6 w-6 text-gray-600 group-hover:text-gray-900" />
-                        </button>
-                    </div>
-                </div>
-
-                {/* Pagination Dots */}
-                <div className="flex justify-center items-center gap-2 mt-6">
-                    {Array.from({ length: window.innerWidth < 1024 ? projects.length : maxIndex + 1 }).map((_, idx) => (
-                        <button
-                            key={idx}
-                            onClick={() => setCurrentIndex(idx)}
-                            className={`h-2 rounded-full transition-all duration-300 ${idx === currentIndex
-                                ? 'w-8 bg-orange-500'
-                                : 'w-2 bg-gray-300 hover:bg-gray-400'
-                                }`}
-                            aria-label={`Go to slide ${idx + 1}`}
-                        />
-                    ))}
-                </div>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+              <h2
+                className={`font-serif text-3xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.1] ${
+                  isTheme1 ? 'text-[#E9E1CC]' : 'text-[#262522]'
+                }`}
+              >
+                {isTheme1 ? (
+                  <>
+                    SELECTED <br />
+                    <span className=" font-normal text-[#C5AA68]">CASE STUDIES.</span>
+                  </>
+                ) : (
+                  <>
+                    SELECTED WORK<span className="text-[#8B8175]">.</span>
+                  </>
+                )}
+              </h2>
             </div>
-        </section>
-    );
+
+            {/* Filter Pills */}
+            <div className="flex items-center gap-2">
+              {['ALL', 'SAAS', 'WEB APPS'].map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setFilter(cat)}
+                  className={`px-4 py-1.5 rounded-full text-xs font-sans uppercase tracking-wider transition-all duration-200 active:translate-y-[1px] ${
+                    filter === cat
+                      ? isTheme1
+                        ? 'bg-[#C5AA68] text-[#071D18] font-bold'
+                        : 'bg-[#262522] text-[#F4F1EC] font-bold'
+                      : isTheme1
+                      ? 'border border-[#C5AA68]/20 text-[#AFAF9D] hover:text-[#E9E1CC]'
+                      : 'border border-[#D8D2C9] text-[#77736D] hover:text-[#262522]'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ================= THEME 1: EDITORIAL CASE STUDIES LIST ================= */}
+        {isTheme1 ? (
+          <div className="space-y-16 lg:space-y-24">
+            {filteredProjects.map((project, index) => {
+              const isEven = index % 2 === 0;
+              return (
+                <TiltCard
+                  key={project.title}
+                  maxTilt={3.5}
+                  className="group relative rounded-3xl p-6 sm:p-10 bg-[#09251F]/90 border border-[#C5AA68]/20 hover:border-[#C5AA68]/50 transition-colors duration-500"
+                  style={{
+                    boxShadow:
+                      '0 1px 0 0 rgba(255,255,255,0.04) inset, 0 30px 60px -20px rgba(0,0,0,0.55), 0 12px 24px -8px rgba(0,0,0,0.4)',
+                  }}
+                >
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+
+                    {/* Visual Mockup Container */}
+                    <div
+                      className={`lg:col-span-7 ${isEven ? 'lg:order-1' : 'lg:order-2'}`}
+                      style={{ transform: 'translateZ(20px)' }}
+                    >
+                      <div
+                        data-cursor="VIEW"
+                        className="relative rounded-xl overflow-hidden border border-[#C5AA68]/25 bg-[#071D18] shadow-2xl transition-transform duration-500 group-hover:scale-[1.01]"
+                      >
+                        {/* Browser Top Bar */}
+                        <div className="px-4 py-2.5 bg-[#10332A] border-b border-[#C5AA68]/15 flex items-center justify-between">
+                          <div className="flex items-center gap-1.5">
+                            <span className="w-2.5 h-2.5 rounded-full bg-red-400/80"></span>
+                            <span className="w-2.5 h-2.5 rounded-full bg-amber-400/80"></span>
+                            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/80"></span>
+                          </div>
+                          <span className="text-[10px] font-mono text-[#AFAF9D]/60 tracking-wider">
+                            {project.title.toLowerCase().replace(/\s+/g, '')}.app
+                          </span>
+                          <span className="text-[10px] text-[#C5AA68] font-sans uppercase tracking-widest font-semibold flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                            {project.status}
+                          </span>
+                        </div>
+
+                        {/* Project Screenshot */}
+                        <div className="relative aspect-[16/10] overflow-hidden bg-black/40">
+                          <img
+                            src={project.image}
+                            alt={project.title}
+                            className="w-full h-full object-contain object-top transition-transform duration-700 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#071D18]/80 via-transparent to-transparent pointer-events-none" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Metadata & Narrative Content */}
+                    <div
+                      className={`lg:col-span-5 flex flex-col justify-center ${isEven ? 'lg:order-2' : 'lg:order-1'}`}
+                      style={{ transform: 'translateZ(35px)' }}
+                    >
+                      <div className="flex items-center justify-between gap-4 mb-4">
+                        <span className="font-serif text-3xl font-bold text-[#C5AA68]">
+                          {project.number}
+                        </span>
+                        <div className="text-right">
+                          <span className="block text-[11px] font-sans uppercase tracking-widest text-[#AFAF9D]">
+                            {project.category}
+                          </span>
+                          <span className="text-[10px] font-mono text-[#C5AA68]">
+                            Year · {project.year}
+                          </span>
+                        </div>
+                      </div>
+
+                      <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#E9E1CC] font-semibold mb-4 leading-tight group-hover:text-[#C5AA68] transition-colors">
+                        {project.title}
+                      </h3>
+
+                      <p className="font-sans text-sm text-[#AFAF9D] leading-relaxed mb-6">
+                        {project.description}
+                      </p>
+
+                      <div className="mb-8">
+                        <span className="block text-[10px] uppercase tracking-widest text-[#C5AA68] font-sans font-semibold mb-2">
+                          Core Stack
+                        </span>
+                        <div className="flex flex-wrap gap-2">
+                          {project.technologies.map((t) => (
+                            <span
+                              key={t}
+                              className="text-xs font-sans px-3 py-1 rounded-full bg-[#10332A] text-[#E9E1CC] border border-[#C5AA68]/20"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          data-cursor="VISIT"
+                          className="group/btn inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs font-sans uppercase tracking-widest font-semibold text-[#071D18] bg-[#C5AA68] hover:bg-[#D8BD7B] transition-all duration-200 active:translate-y-px hover:-translate-y-0.5"
+                          style={{
+                            boxShadow:
+                              '0 1px 0 0 rgba(255,255,255,0.35) inset, 0 8px 20px -6px rgba(197,170,104,0.45)',
+                          }}
+                        >
+                          <span>Visit Case Study</span>
+                          <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:translate-x-1" />
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </TiltCard>
+              );
+            })}
+          </div>
+        ) : (
+          /* ================= THEME 2: EDITORIAL MASONRY / CAMPAIGN RHYTHM ================= */
+          <div className="space-y-16">
+            {/* Featured Hero Project */}
+            {filteredProjects[0] && (
+              <TiltCard
+                maxTilt={3}
+                className="bg-white border border-[#D8D2C9] rounded-2xl overflow-hidden p-6 sm:p-10"
+                style={{
+                  boxShadow:
+                    '0 1px 0 0 rgba(255,255,255,0.6) inset, 0 30px 60px -20px rgba(38,37,34,0.16), 0 12px 24px -8px rgba(38,37,34,0.08)',
+                }}
+              >
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                  <div className="lg:col-span-8" style={{ transform: 'translateZ(15px)' }}>
+                    <div
+                      data-cursor="VIEW"
+                      className="relative rounded-xl overflow-hidden aspect-[16/9] border border-[#D8D2C9] group"
+                    >
+                      <img
+                        src={filteredProjects[0].image}
+                        alt={filteredProjects[0].title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-104"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="lg:col-span-4 flex flex-col justify-between" style={{ transform: 'translateZ(30px)' }}>
+                    <div>
+                      <span className="text-xs uppercase tracking-[0.2em] font-sans text-[#8B8175] font-semibold">
+                        FEATURED PROJECT
+                      </span>
+                      <h3 className="font-serif text-3xl sm:text-4xl text-[#262522] font-medium tracking-tight mt-2 mb-4">
+                        {filteredProjects[0].title}
+                      </h3>
+                      <p className="font-sans text-sm text-[#77736D] leading-relaxed mb-6">
+                        {filteredProjects[0].description}
+                      </p>
+                    </div>
+
+                    <div className="space-y-4 pt-4 border-t border-[#D8D2C9]">
+                      <div className="flex justify-between text-xs font-sans">
+                        <span className="text-[#77736D] uppercase tracking-wider">Role</span>
+                        <span className="text-[#262522] font-medium">{filteredProjects[0].role}</span>
+                      </div>
+                      <div className="flex justify-between text-xs font-sans">
+                        <span className="text-[#77736D] uppercase tracking-wider">Year</span>
+                        <span className="text-[#262522] font-medium">{filteredProjects[0].year}</span>
+                      </div>
+                      <div className="pt-2">
+                        <a
+                          href={filteredProjects[0].link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs font-sans uppercase tracking-widest font-semibold bg-[#262522] text-[#F4F1EC] hover:bg-[#3D3A34] transition-all duration-200 active:translate-y-px hover:-translate-y-0.5"
+                          style={{
+                            boxShadow:
+                              '0 1px 0 0 rgba(255,255,255,0.15) inset, 0 8px 20px -6px rgba(38,37,34,0.3)',
+                          }}
+                        >
+                          <span>Live Project</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </TiltCard>
+            )}
+
+            {/* Remaining Projects in 2-Column Editorial Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {filteredProjects.slice(1).map((project) => (
+                <TiltCard
+                  key={project.title}
+                  maxTilt={5}
+                  className="bg-white border border-[#D8D2C9] rounded-2xl overflow-hidden p-6 sm:p-8 flex flex-col justify-between group transition-colors duration-300 hover:border-[#8B8175]/40"
+                  style={{
+                    boxShadow:
+                      '0 1px 0 0 rgba(255,255,255,0.6) inset, 0 20px 40px -16px rgba(38,37,34,0.12), 0 8px 16px -6px rgba(38,37,34,0.06)',
+                  }}
+                >
+                  <div style={{ transform: 'translateZ(15px)' }}>
+                    <div
+                      data-cursor="VIEW"
+                      className="relative rounded-xl overflow-hidden aspect-[16/10] border border-[#D8D2C9] mb-6"
+                    >
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <span className="absolute top-3 right-3 px-3 py-1 rounded-full text-[10px] font-sans font-semibold uppercase tracking-wider bg-white/90 backdrop-blur-sm text-[#262522]">
+                        {project.category}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-serif text-lg font-medium text-[#8B8175]">
+                        {project.number}
+                      </span>
+                      <span className="text-xs font-mono text-[#77736D]">{project.year}</span>
+                    </div>
+
+                    <h3 className="font-serif text-2xl text-[#262522] font-medium tracking-tight mb-3 group-hover:text-[#8B8175] transition-colors">
+                      {project.title}
+                    </h3>
+
+                    <p className="font-sans text-xs sm:text-sm text-[#77736D] leading-relaxed mb-6">
+                      {project.description}
+                    </p>
+                  </div>
+
+                  <div
+                    className="pt-4 border-t border-[#D8D2C9] flex items-center justify-between"
+                    style={{ transform: 'translateZ(15px)' }}
+                  >
+                    <div className="flex flex-wrap gap-1.5">
+                      {project.technologies.slice(0, 3).map((t) => (
+                        <span
+                          key={t}
+                          className="text-[10px] uppercase font-sans tracking-wider px-2 py-0.5 rounded bg-[#F4F1EC] text-[#262522]"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs font-sans uppercase tracking-widest font-semibold text-[#262522] hover:text-[#8B8175] transition-colors"
+                    >
+                      <span>View</span>
+                      <ArrowUpRight className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
+                </TiltCard>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  );
 };
 
 export default ClientProjects;
