@@ -13,13 +13,9 @@ import ScrollReveal from './ScrollReveal';
 const Home = () => {
   return (
     <main className="relative">
-      <ScrollReveal>
-        <Hero />
-      </ScrollReveal>
+      <Hero />
 
-      <ScrollReveal>
-        <About />
-      </ScrollReveal>
+      <About />
 
       <ScrollReveal>
         <ServicesSection />

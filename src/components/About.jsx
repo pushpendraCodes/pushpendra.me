@@ -49,7 +49,7 @@ const About = () => {
   return (
     <section
       id="about"
-      className={`py-20 lg:py-28 transition-colors duration-300 ${
+      className={`pt-12 pb-20 lg:pt-16 lg:pb-28 transition-colors duration-300 ${
         isTheme1
           ? 'border-y border-[#C5AA68]/15 bg-[#09251F]/40'
           : 'border-y border-[#D8D2C9] bg-[#E9E4DD]/40'

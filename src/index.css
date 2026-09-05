@@ -99,7 +99,8 @@
    ========================================================================== */
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
+  overflow-x: clip;
 }
 
 body {
@@ -109,7 +110,7 @@ body {
     "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: visible;
   transition: background-color 400ms ease, color 400ms ease;
 }
 
@@ -148,4 +149,29 @@ body {
               color 350ms cubic-bezier(0.16, 1, 0.3, 1),
               border-color 350ms cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 350ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Scroll-driven frame sequence hero (Optech-style)
+   Tall section = scroll distance for frames; sticky panel stays pinned until frames finish */
+.scroll-animation {
+  height: 350vh;
+  min-height: 350vh;
+  margin: 0;
+  padding: 0;
+  display: block;
+  position: relative;
+}
+
+@media (max-width: 1024px) {
+  .scroll-animation {
+    height: 300vh;
+    min-height: 300vh;
+  }
+}
+
+@media (max-width: 768px) {
+  .scroll-animation {
+    height: 280vh;
+    min-height: 280vh;
+  }
 }

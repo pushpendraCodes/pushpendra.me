@@ -54,8 +54,8 @@ const Navbar = () => {
       ? '0 1px 0 0 rgba(255,255,255,0.06) inset, 0 24px 48px -12px rgba(0,0,0,0.55), 0 10px 20px -6px rgba(0,0,0,0.45)'
       : '0 1px 0 0 rgba(255,255,255,0.05) inset, 0 16px 32px -12px rgba(0,0,0,0.4), 0 6px 12px -4px rgba(0,0,0,0.3)'
     : isScrolled
-      ? '0 1px 0 0 rgba(255,255,255,0.7) inset, 0 24px 48px -12px rgba(38,37,34,0.16), 0 10px 20px -6px rgba(38,37,34,0.1)'
-      : '0 1px 0 0 rgba(255,255,255,0.6) inset, 0 16px 32px -12px rgba(38,37,34,0.1), 0 6px 12px -4px rgba(38,37,34,0.06)';
+      ? '0 1px 0 0 rgba(255,255,255,0.95) inset, 0 28px 56px -12px rgba(38,37,34,0.28), 0 12px 28px -8px rgba(38,37,34,0.18), 0 0 0 1px rgba(38,37,34,0.06)'
+      : '0 1px 0 0 rgba(255,255,255,0.9) inset, 0 20px 40px -12px rgba(38,37,34,0.22), 0 8px 20px -6px rgba(38,37,34,0.14), 0 0 0 1px rgba(38,37,34,0.05)';
 
   return (
     <>
@@ -69,7 +69,7 @@ const Navbar = () => {
           className={`relative w-full max-w-7xl rounded-[28px] transition-all duration-500 ease-out ${
             isTheme1
               ? 'bg-[#0A241E]/80 border border-[#C5AA68]/15'
-              : 'bg-white/75 border border-[#E4DFD6]'
+              : 'bg-[#FFFCFA]/95 border border-[#C8C1B6] shadow-[0_0_0_1px_rgba(38,37,34,0.04)]'
           } backdrop-blur-xl`}
         >
           <div
@@ -110,7 +110,7 @@ const Navbar = () => {
             >
               <div
                 className={`absolute top-1/2 h-8 -translate-y-1/2 rounded-full pointer-events-none ${
-                  isTheme1 ? 'bg-[#C5AA68]/10' : 'bg-[#262522]/5'
+                  isTheme1 ? 'bg-[#C5AA68]/10' : 'bg-[#262522]/10'
                 }`}
                 style={{
                   left: indicator.left,
@@ -129,7 +129,7 @@ const Navbar = () => {
                   className={`relative px-2.5 xl:px-4 py-2 font-sans text-[10px] xl:text-[11px] tracking-[0.1em] xl:tracking-[0.14em] uppercase whitespace-nowrap rounded-full transition-all duration-200 hover:-translate-y-px ${
                     isTheme1
                       ? 'text-[#AFAF9D] hover:text-[#E9E1CC]'
-                      : 'text-[#77736D] hover:text-[#262522]'
+                      : 'text-[#4A4640] hover:text-[#262522] font-medium'
                   }`}
                 >
                   {link.name}
@@ -148,7 +148,7 @@ const Navbar = () => {
                   className={`p-2 rounded-full transition-all duration-200 hover:-translate-y-px ${
                     isTheme1
                       ? 'text-[#AFAF9D] hover:text-[#C5AA68] hover:bg-[#C5AA68]/10'
-                      : 'text-[#77736D] hover:text-[#262522] hover:bg-[#262522]/5'
+                      : 'text-[#585148] hover:text-[#262522] hover:bg-[#262522]/8'
                   }`}
                 >
                   <Github className="w-4 h-4" />
@@ -161,7 +161,7 @@ const Navbar = () => {
                   className={`p-2 rounded-full transition-all duration-200 hover:-translate-y-px ${
                     isTheme1
                       ? 'text-[#AFAF9D] hover:text-[#C5AA68] hover:bg-[#C5AA68]/10'
-                      : 'text-[#77736D] hover:text-[#262522] hover:bg-[#262522]/5'
+                      : 'text-[#585148] hover:text-[#262522] hover:bg-[#262522]/8'
                   }`}
                 >
                   <FaLinkedin className="w-4 h-4" />
@@ -174,7 +174,7 @@ const Navbar = () => {
                   className={`p-2 rounded-full transition-all duration-200 hover:-translate-y-px ${
                     isTheme1
                       ? 'text-[#AFAF9D] hover:text-[#C5AA68] hover:bg-[#C5AA68]/10'
-                      : 'text-[#77736D] hover:text-[#262522] hover:bg-[#262522]/5'
+                      : 'text-[#585148] hover:text-[#262522] hover:bg-[#262522]/8'
                   }`}
                 >
                   <FaWhatsapp className="w-4 h-4" />
@@ -183,7 +183,7 @@ const Navbar = () => {
 
               <div
                 className={`hidden xl:block w-px h-5 ${
-                  isTheme1 ? 'bg-[#C5AA68]/15' : 'bg-[#E4DFD6]'
+                  isTheme1 ? 'bg-[#C5AA68]/15' : 'bg-[#C8C1B6]'
                 }`}
               />
 
@@ -228,8 +228,6 @@ const Navbar = () => {
         </header>
       </div>
 
-      <div className={isScrolled ? 'h-20' : 'h-24 sm:h-28'} aria-hidden="true" />
-
       {/* ============ MOBILE/TABLET MENU DRAWER (below lg) ============ */}
       <div
         className={`fixed inset-x-3 z-40 lg:hidden transition-all duration-400 ease-out ${
@@ -245,7 +243,7 @@ const Navbar = () => {
           className={`rounded-3xl backdrop-blur-xl border ${
             isTheme1
               ? 'bg-[#0A241E]/95 border-[#C5AA68]/15'
-              : 'bg-white/95 border-[#E4DFD6]'
+              : 'bg-[#FFFCFA] border-[#C8C1B6]'
           }`}
         >
           <div className="px-5 py-5 space-y-1">
