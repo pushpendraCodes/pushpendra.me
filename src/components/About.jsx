@@ -197,23 +197,22 @@ const About = () => {
           <div className="lg:col-span-7 flex flex-col justify-between">
             <div className="space-y-5 text-base sm:text-lg leading-relaxed font-sans">
               <p className={isTheme1 ? 'text-[#E9E1CC]' : 'text-[#262522]'}>
-                I started <span className="font-semibold">One9 Tech</span> with a singular vision:
-                to bridge the gap between creative design and robust software engineering —
-                delivering production-ready digital products without the usual delays or jargon.
+                I started <span className="font-semibold">One9 Tech</span> in Rewa, Madhya Pradesh
+                to bridge creative design and software engineering — websites, apps, and custom
+                software that ship without the usual delays or jargon.
               </p>
 
               <p className={isTheme1 ? 'text-[#AFAF9D]' : 'text-[#77736D]'}>
-                Over the past 4+ years, I have architected and shipped end-to-end web applications,
-                SaaS MVPs, B2B e-commerce platforms, and real-time social applications for clients
-                across India and abroad. From integrating WhatsApp automation and Agora video SDKs
-                to implementing AI-driven workflows and payment gateways, my focus is always on
-                business results and engineering resilience.
+                Over the past 4+ years I have built web applications, SaaS products, e-commerce,
+                and mobile apps for clients in Rewa and across India. From WhatsApp automation
+                and payment gateways to AI workflows, the focus is business results and code
+                that lasts.
               </p>
 
               <p className={isTheme1 ? 'text-[#AFAF9D]' : 'text-[#77736D]'}>
-                Whether you're an early-stage startup looking to validate your MVP or an established
-                business elevating your digital presence, I collaborate with you directly from initial
-                discovery to deployment and continuous scaling.
+                If you are searching for a website developer, app developer, or software company
+                near Rewa — Satna, Sidhi, and nearby included — I work with you directly from
+                discovery to launch and ongoing support.
               </p>
             </div>
 

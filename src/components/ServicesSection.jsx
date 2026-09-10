@@ -12,7 +12,7 @@ const ServicesSection = () => {
       icon: <Globe className="h-5 w-5" />,
       title: "Web Development",
       badge: "Web",
-      description: "Build powerful, scalable web solutions tailored to your business needs.",
+      description: "Custom websites and web apps for businesses in Rewa and Madhya Pradesh.",
       features: [
         "Custom Website Development",
         "Web Application Development",
@@ -28,7 +28,7 @@ const ServicesSection = () => {
       icon: <Smartphone className="h-5 w-5" />,
       title: "Mobile App Development",
       badge: "Mobile",
-      description: "Native and cross-platform mobile applications for iOS and Android.",
+      description: "iOS, Android, and React Native apps built for local businesses and startups.",
       features: [
         "Android App Development",
         "iOS App Development",
@@ -43,7 +43,7 @@ const ServicesSection = () => {
       icon: <Code className="h-5 w-5" />,
       title: "Custom Software Development",
       badge: "Software",
-      description: "Bespoke software solutions designed for your unique business processes.",
+      description: "Custom software, billing, ERP/CRM, and automation for businesses in Rewa.",
       features: [
         "Business Automation Software",
         "ERP / CRM Development",
@@ -300,14 +300,15 @@ const ServicesSection = () => {
               isTheme1 ? "text-[#E9E1CC]" : "text-[#262522]"
             }`}
           >
-            Comprehensive Software Solutions
+            Website, App &amp; Software Services in Rewa
           </h2>
           <p
-            className={`text-lg ${
+            className={`text-lg max-w-3xl ${
               isTheme1 ? "text-[#AFAF9D]" : "text-[#77736D]"
             }`}
           >
-            From concept to deployment, we deliver cutting-edge technology solutions tailored to your business needs.
+            One9 Tech builds websites, mobile apps, and custom software for businesses
+            in Rewa, Madhya Pradesh — from first sketch to live product and support.
           </p>
         </div>
 

@@ -344,11 +344,11 @@ const Hero = () => {
               className="inline-block h-1.5 w-1.5 rounded-full"
               style={{ backgroundColor: accent, boxShadow: `0 0 10px ${accent}` }}
             />
-            FULL STACK DEVELOPER // ONE9 TECH
+            WEBSITE · APP · SOFTWARE // REWA
           </span>
 
           <h1
-            className="max-w-[16ch] font-serif text-5xl font-semibold leading-[0.95] tracking-tighter md:text-7xl lg:text-8xl"
+            className="max-w-[18ch] font-serif text-5xl font-semibold leading-[0.95] tracking-tighter md:text-7xl lg:text-8xl"
             style={{ color: fg }}
           >
             Pushpendra
@@ -357,11 +357,12 @@ const Hero = () => {
           </h1>
 
           <p
-            className="max-w-[42ch] font-sans text-sm leading-relaxed md:text-base"
+            className="max-w-[46ch] font-sans text-sm leading-relaxed md:text-base"
             style={{ color: muted }}
           >
-            I design and develop modern websites, SaaS products, and custom web
-            applications for ambitious businesses.
+            Website, mobile app, and custom software development in Rewa,
+            Madhya Pradesh — for local businesses and startups who need a
+            product that actually ships.
           </p>
 
           <div className="flex flex-wrap items-center gap-3 pt-1">

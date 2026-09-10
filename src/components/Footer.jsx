@@ -7,7 +7,7 @@ const Footer = () => {
   const { isTheme1 } = useTheme();
 
   const whatsappUrl = "https://wa.me/918516064332?text=Hello%20Pushpendra%2C%20I%20have%20a%20project%20in%20mind";
-  const emailUrl = "mailto:pushpendracontact8055@gmail.com";
+  const emailUrl = "mailto:one9tech.bussiness@gmail.com";
   const phoneUrl = "tel:+918516064332";
 
   return (
@@ -63,8 +63,8 @@ const Footer = () => {
               isTheme1 ? 'text-[#AFAF9D]' : 'text-[#77736D]'
             }`}
           >
-            Have a website, SaaS product, e-commerce platform or custom web application in mind?
-            Let's discuss architecture, timelines, and how to bring it into production.
+            Looking for website, app, or software development in Rewa? Let&apos;s talk
+            architecture, timelines, and how to get your product live.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
@@ -104,7 +104,7 @@ const Footer = () => {
               }`}
             >
               <Mail className="w-3.5 h-3.5 text-[#C5AA68]" />
-              pushpendracontact8055@gmail.com
+              one9tech.bussiness@gmail.com
             </a>
 
             <a
@@ -135,6 +135,11 @@ const Footer = () => {
           
           {/* Left: Brand Identity */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
+            <img
+              src="/logo.png"
+              alt="One9 Tech"
+              className="h-10 w-auto object-contain object-left mb-2 rounded-xl"
+            />
             <span
               className={`font-serif text-xl tracking-wider font-semibold ${
                 isTheme1 ? 'text-[#E9E1CC]' : 'text-[#262522]'

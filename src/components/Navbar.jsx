@@ -86,20 +86,16 @@ const Navbar = () => {
                 transform: `perspective(400px) rotateX(${logoTilt.x}deg) rotateY(${logoTilt.y}deg)`,
                 transition: 'transform 0.2s ease-out',
               }}
-              className="flex shrink-0 items-center focus:outline-none min-w-0"
+              className="flex shrink-0 items-center gap-2 focus:outline-none min-w-0"
+              aria-label="One9 Tech home"
             >
-              <span
-                className={`font-serif tracking-wide whitespace-nowrap transition-colors duration-300 ${
-                  isTheme1
-                    ? 'text-[#E9E1CC] text-base sm:text-lg font-medium'
-                    : 'text-[#262522] text-lg sm:text-xl font-semibold'
+              <img
+                src="/logo.png"
+                alt="One9 Tech"
+                className={`w-auto object-contain object-left rounded-xl ${
+                  isScrolled ? 'h-7 sm:h-9' : 'h-8 sm:h-10'
                 }`}
-              >
-                One9{' '}
-                <span className={isTheme1 ? 'text-[#C5AA68]' : 'text-[#8B8175]'}>
-                  {isTheme1 ? 'Tech' : 'Tech.'}
-                </span>
-              </span>
+              />
             </a>
 
             {/* ============ CENTER NAV (Desktop, lg+) ============ */}
