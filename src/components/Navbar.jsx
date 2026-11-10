@@ -1,326 +1,117 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Github, Instagram, Menu, X, ArrowRight } from 'lucide-react';
-import { FaLinkedin, FaWhatsapp } from 'react-icons/fa';
-import { useTheme } from '../context/ThemeContext';
-import ThemeSwitcher from './ThemeSwitcher';
+import React, { useState, useEffect } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import { Menu, X, ArrowRight } from 'lucide-react';
+import { WHATSAPP_URL } from '../lib/tokens';
+
+const navLinks = [
+  { name: 'Services', href: '/services' },
+  { name: 'Work', href: '/work' },
+  { name: 'About', href: '/about' },
+  { name: 'Contact', href: '/contact' },
+];
 
 const Navbar = () => {
-  const { isTheme1 } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [logoTilt, setLogoTilt] = useState({ x: 0, y: 0 });
-  const [indicator, setIndicator] = useState({ left: 0, width: 0, opacity: 0 });
-
-  const navRef = useRef(null);
-  const itemRefs = useRef([]);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setIsScrolled(window.scrollY > 24);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
-  const navLinks = [
-    { name: 'Work', href: '#works' },
-    { name: 'About', href: '#about' },
-    { name: 'Services', href: '#services' },
-    { name: 'Process', href: '#process' },
-    { name: 'Contact', href: '#contact' },
-  ];
-
-  const whatsappUrl =
-    'https://wa.me/918516064332?text=Hello%20Pushpendra%2C%20I%20have%20a%20project%20in%20mind';
-
-  const handleItemEnter = (idx) => {
-    const el = itemRefs.current[idx];
-    if (!el || !navRef.current) return;
-    const parentRect = navRef.current.getBoundingClientRect();
-    const rect = el.getBoundingClientRect();
-    setIndicator({ left: rect.left - parentRect.left, width: rect.width, opacity: 1 });
-  };
-
-  const handleNavLeave = () => setIndicator((prev) => ({ ...prev, opacity: 0 }));
-
-  const handleLogoMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width - 0.5;
-    const py = (e.clientY - rect.top) / rect.height - 0.5;
-    setLogoTilt({ x: py * -6, y: px * 6 });
-  };
-  const handleLogoLeave = () => setLogoTilt({ x: 0, y: 0 });
-
-  const pillShadow = isTheme1
-    ? isScrolled
-      ? '0 1px 0 0 rgba(255,255,255,0.06) inset, 0 24px 48px -12px rgba(0,0,0,0.55), 0 10px 20px -6px rgba(0,0,0,0.45)'
-      : '0 1px 0 0 rgba(255,255,255,0.05) inset, 0 16px 32px -12px rgba(0,0,0,0.4), 0 6px 12px -4px rgba(0,0,0,0.3)'
-    : isScrolled
-      ? '0 1px 0 0 rgba(255,255,255,0.95) inset, 0 28px 56px -12px rgba(38,37,34,0.28), 0 12px 28px -8px rgba(38,37,34,0.18), 0 0 0 1px rgba(38,37,34,0.06)'
-      : '0 1px 0 0 rgba(255,255,255,0.9) inset, 0 20px 40px -12px rgba(38,37,34,0.22), 0 8px 20px -6px rgba(38,37,34,0.14), 0 0 0 1px rgba(38,37,34,0.05)';
 
   return (
     <>
-      <div
-        className={`fixed inset-x-0 z-50 flex justify-center px-3 sm:px-6 transition-all duration-500 ease-out ${
-          isScrolled ? 'top-3' : 'top-4 sm:top-6'
+      <header
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+          isScrolled
+            ? 'bg-[#080808]/90 backdrop-blur-md border-b border-[rgba(244,242,236,0.08)]'
+            : 'bg-transparent border-b border-transparent'
         }`}
       >
-        <header
-          style={{ boxShadow: pillShadow }}
-          className={`relative w-full max-w-7xl rounded-[28px] transition-all duration-500 ease-out ${
-            isTheme1
-              ? 'bg-[#0A241E]/80 border border-[#C5AA68]/15'
-              : 'bg-[#FFFCFA]/95 border border-[#C8C1B6] shadow-[0_0_0_1px_rgba(38,37,34,0.04)]'
-          } backdrop-blur-xl`}
-        >
-          <div
-            className={`flex items-center justify-between flex-nowrap gap-2 px-4 sm:px-5 lg:px-7 transition-all duration-500 ${
-              isScrolled ? 'h-14' : 'h-16 sm:h-[4.5rem]'
-            }`}
-          >
-            {/* ============ LOGO ============ */}
-            <a
-              href="#"
-              onMouseMove={handleLogoMove}
-              onMouseLeave={handleLogoLeave}
-              style={{
-                transform: `perspective(400px) rotateX(${logoTilt.x}deg) rotateY(${logoTilt.y}deg)`,
-                transition: 'transform 0.2s ease-out',
-              }}
-              className="flex shrink-0 items-center gap-2 focus:outline-none min-w-0"
-              aria-label="One9 Tech home"
-            >
-              <img
-                src="/logo.png"
-                alt="One9 Tech"
-                className={`w-auto object-contain object-left rounded-xl ${
-                  isScrolled ? 'h-7 sm:h-9' : 'h-8 sm:h-10'
-                }`}
-              />
-            </a>
+        <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-5 md:h-[72px] md:px-10">
+          {/* Logo */}
+          <Link to="/" aria-label="One9 Tech home" className="flex shrink-0 items-center gap-2.5">
+            <img
+              src="/logo.png"
+              alt="One9 Tech"
+              className="h-8 w-auto rounded-lg object-contain md:h-9"
+            />
+          </Link>
 
-            {/* ============ CENTER NAV (Desktop, lg+) ============ */}
-            <nav
-              ref={navRef}
-              onMouseLeave={handleNavLeave}
-              className="hidden lg:flex relative items-center gap-0.5 xl:gap-1 shrink-0"
-            >
-              <div
-                className={`absolute top-1/2 h-8 -translate-y-1/2 rounded-full pointer-events-none ${
-                  isTheme1 ? 'bg-[#C5AA68]/10' : 'bg-[#262522]/10'
-                }`}
-                style={{
-                  left: indicator.left,
-                  width: indicator.width,
-                  opacity: indicator.opacity,
-                  transition:
-                    'left 0.28s cubic-bezier(0.22,1,0.36,1), width 0.28s cubic-bezier(0.22,1,0.36,1), opacity 0.2s ease',
-                }}
-              />
-              {navLinks.map((link, idx) => (
-                <a
-                  key={link.name}
-                  ref={(el) => (itemRefs.current[idx] = el)}
-                  href={link.href}
-                  onMouseEnter={() => handleItemEnter(idx)}
-                  className={`relative px-2.5 xl:px-4 py-2 font-sans text-[10px] xl:text-[11px] tracking-[0.1em] xl:tracking-[0.14em] uppercase whitespace-nowrap rounded-full transition-all duration-200 hover:-translate-y-px ${
-                    isTheme1
-                      ? 'text-[#AFAF9D] hover:text-[#E9E1CC]'
-                      : 'text-[#4A4640] hover:text-[#262522] font-medium'
-                  }`}
-                >
-                  {link.name}
-                </a>
-              ))}
-            </nav>
-
-            {/* ============ RIGHT: Socials + Switcher + CTA (lg+) ============ */}
-            <div className="hidden lg:flex shrink-0 items-center gap-2 xl:gap-4">
-              <div className="hidden xl:flex items-center gap-1">
-                <a
-                  href="https://github.com/pushpendraCodes"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="GitHub Profile"
-                  className={`p-2 rounded-full transition-all duration-200 hover:-translate-y-px ${
-                    isTheme1
-                      ? 'text-[#AFAF9D] hover:text-[#C5AA68] hover:bg-[#C5AA68]/10'
-                      : 'text-[#585148] hover:text-[#262522] hover:bg-[#262522]/8'
-                  }`}
-                >
-                  <Github className="w-4 h-4" />
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/1pushpendrapatel/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="LinkedIn Profile"
-                  className={`p-2 rounded-full transition-all duration-200 hover:-translate-y-px ${
-                    isTheme1
-                      ? 'text-[#AFAF9D] hover:text-[#C5AA68] hover:bg-[#C5AA68]/10'
-                      : 'text-[#585148] hover:text-[#262522] hover:bg-[#262522]/8'
-                  }`}
-                >
-                  <FaLinkedin className="w-4 h-4" />
-                </a>
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="WhatsApp Contact"
-                  className={`p-2 rounded-full transition-all duration-200 hover:-translate-y-px ${
-                    isTheme1
-                      ? 'text-[#AFAF9D] hover:text-[#C5AA68] hover:bg-[#C5AA68]/10'
-                      : 'text-[#585148] hover:text-[#262522] hover:bg-[#262522]/8'
-                  }`}
-                >
-                  <FaWhatsapp className="w-4 h-4" />
-                </a>
-              </div>
-
-              <div
-                className={`hidden xl:block w-px h-5 ${
-                  isTheme1 ? 'bg-[#C5AA68]/15' : 'bg-[#C8C1B6]'
-                }`}
-              />
-
-              <ThemeSwitcher />
-
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`group relative inline-flex items-center gap-1.5 px-3.5 xl:px-5 py-2 xl:py-2.5 rounded-full text-[10px] xl:text-[11px] font-sans uppercase tracking-widest font-semibold whitespace-nowrap overflow-hidden transition-all duration-200 active:translate-y-px hover:-translate-y-px ${
-                  isTheme1
-                    ? 'bg-[#C5AA68] text-[#071D18] hover:bg-[#D8BD7B]'
-                    : 'bg-[#262522] text-[#F4F1EC] hover:bg-[#3D3A34]'
-                }`}
-                style={{
-                  boxShadow: isTheme1
-                    ? '0 1px 0 0 rgba(255,255,255,0.35) inset, 0 6px 16px -4px rgba(197,170,104,0.5)'
-                    : '0 1px 0 0 rgba(255,255,255,0.15) inset, 0 6px 16px -4px rgba(38,37,34,0.35)',
-                }}
-              >
-                <span>Start Project</span>
-                <ArrowRight className="w-3.5 h-3.5 shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
-              </a>
-            </div>
-
-            {/* ============ MOBILE/TABLET: Switcher + Hamburger (below lg) ============ */}
-            <div className="flex lg:hidden shrink-0 items-center gap-2">
-              <ThemeSwitcher compact={true} />
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                aria-label={isMobileMenuOpen ? 'Close Menu' : 'Open Menu'}
-                className={`p-2 rounded-full transition-all duration-200 active:translate-y-px ${
-                  isTheme1
-                    ? 'text-[#E9E1CC] hover:bg-[#C5AA68]/10'
-                    : 'text-[#262522] hover:bg-[#262522]/5'
-                }`}
-              >
-                {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-              </button>
-            </div>
-          </div>
-        </header>
-      </div>
-
-      {/* ============ MOBILE/TABLET MENU DRAWER (below lg) ============ */}
-      <div
-        className={`fixed inset-x-3 z-40 lg:hidden transition-all duration-400 ease-out ${
-          isScrolled ? 'top-[4.5rem]' : 'top-[5.25rem] sm:top-[6.5rem]'
-        } ${
-          isMobileMenuOpen
-            ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
-            : 'opacity-0 -translate-y-2 scale-[0.98] pointer-events-none'
-        }`}
-      >
-        <div
-          style={{ boxShadow: pillShadow }}
-          className={`rounded-3xl backdrop-blur-xl border ${
-            isTheme1
-              ? 'bg-[#0A241E]/95 border-[#C5AA68]/15'
-              : 'bg-[#FFFCFA] border-[#C8C1B6]'
-          }`}
-        >
-          <div className="px-5 py-5 space-y-1">
-            {navLinks.map((link, idx) => (
-              <a
+          {/* Center links — mono labels */}
+          <nav className="hidden items-center gap-8 lg:flex">
+            {navLinks.map((link) => (
+              <NavLink
                 key={link.name}
-                href={link.href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                style={{
-                  transitionDelay: isMobileMenuOpen ? `${idx * 40}ms` : '0ms',
-                }}
-                className={`block px-3 py-2.5 rounded-xl text-sm font-sans tracking-wide transition-all duration-300 ${
-                  isMobileMenuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'
-                } ${
-                  isTheme1
-                    ? 'text-[#E9E1CC] hover:text-[#C5AA68] hover:bg-[#C5AA68]/10'
-                    : 'text-[#262522] hover:text-[#8B8175] hover:bg-[#262522]/5'
+                to={link.href}
+                className={({ isActive }) =>
+                  `font-mono-label transition-colors duration-200 hover:text-[#F4F2EC] ${
+                    isActive ? 'text-[var(--accent)]' : 'text-[#8A8A8A]'
+                  }`
+                }
+              >
+                {link.name}
+              </NavLink>
+            ))}
+          </nav>
+
+          {/* CTA */}
+          <div className="hidden items-center gap-6 lg:flex">
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-2 font-mono-label text-[#F4F2EC] transition-colors duration-200 hover:text-[var(--accent)]"
+            >
+              Start a Project
+              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+            </a>
+          </div>
+
+          {/* Mobile toggle */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            className="p-2 text-[#F4F2EC] lg:hidden"
+          >
+            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile menu */}
+      <div
+        className={`fixed inset-0 z-40 bg-[#080808] transition-all duration-300 lg:hidden ${
+          menuOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
+        }`}
+      >
+        <div className="flex h-full flex-col justify-between px-6 pb-10 pt-28">
+          <nav className="flex flex-col gap-2">
+            {navLinks.map((link, idx) => (
+              <Link
+                key={link.name}
+                to={link.href}
+                onClick={() => setMenuOpen(false)}
+                style={{ transitionDelay: menuOpen ? `${idx * 50}ms` : '0ms' }}
+                className={`font-display border-b border-[rgba(244,242,236,0.08)] py-4 text-4xl text-[#F4F2EC] transition-all duration-300 ${
+                  menuOpen ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'
                 }`}
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
+          </nav>
 
-            <div
-              className={`pt-4 mt-3 border-t flex items-center justify-between ${
-                isTheme1 ? 'border-[#C5AA68]/10' : 'border-[#E4DFD6]'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <a
-                  href="https://github.com/pushpendraCodes"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="GitHub Profile"
-                  className={isTheme1 ? 'text-[#C5AA68]' : 'text-[#262522]'}
-                >
-                  <Github className="w-4 h-4" />
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/1pushpendrapatel/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="LinkedIn Profile"
-                  className={isTheme1 ? 'text-[#C5AA68]' : 'text-[#262522]'}
-                >
-                  <FaLinkedin className="w-4 h-4" />
-                </a>
-                <a
-                  href="https://www.instagram.com/one9.tech"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Instagram Profile"
-                  className={isTheme1 ? 'text-[#C5AA68]' : 'text-[#262522]'}
-                >
-                  <Instagram className="w-4 h-4" />
-                </a>
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="WhatsApp Contact"
-                  className={isTheme1 ? 'text-[#C5AA68]' : 'text-[#262522]'}
-                >
-                  <FaWhatsapp className="w-4 h-4" />
-                </a>
-              </div>
-
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-[11px] font-sans uppercase tracking-widest font-semibold active:translate-y-px transition-transform ${
-                  isTheme1 ? 'bg-[#C5AA68] text-[#071D18]' : 'bg-[#262522] text-[#F4F1EC]'
-                }`}
-              >
-                Start Project
-                <ArrowRight className="w-3.5 h-3.5" />
-              </a>
-            </div>
-          </div>
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setMenuOpen(false)}
+            className="inline-flex items-center justify-center gap-2 bg-[var(--accent)] px-8 py-4 font-mono-label text-[#080808]"
+          >
+            Start a Project <ArrowRight className="h-3.5 w-3.5" />
+          </a>
         </div>
       </div>
     </>

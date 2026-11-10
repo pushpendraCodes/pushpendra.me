@@ -1,13 +1,13 @@
 import React from 'react';
 import Hero from './Hero';
-import About from './About';
-import ServicesSection from './ServicesSection';
-import ClientProjects from './ClientProjects';
-import TechStack from './TechStack';
-import ExperienceTimeline from './ExperienceTimeline';
-import HowWeWork1 from './HowWeWork1';
-import TestimonialCarousel from './TestimonialCarousel';
-import Footer from './Footer';
+import Marquee from './Marquee';
+import SystemsIntro from './SystemsIntro';
+import SystemsAccordion from './SystemsAccordion';
+import Architecture from './Architecture';
+import Process from './Process';
+import AboutStudio from './AboutStudio';
+import Manifesto from './Manifesto';
+import Work from './Work';
 import ScrollReveal from './ScrollReveal';
 
 const Home = () => {
@@ -15,35 +15,33 @@ const Home = () => {
     <main className="relative">
       <Hero />
 
-      <About />
+      <Marquee />
 
       <ScrollReveal>
-        <ServicesSection />
+        <SystemsIntro />
       </ScrollReveal>
 
       <ScrollReveal>
-        <ClientProjects />
+        <SystemsAccordion />
       </ScrollReveal>
 
       <ScrollReveal>
-        <TechStack />
-      </ScrollReveal>
-{/* 
-      <ScrollReveal>
-        <ExperienceTimeline />
-      </ScrollReveal> */}
-
-      <ScrollReveal>
-        <HowWeWork1 />
+        <Architecture />
       </ScrollReveal>
 
       <ScrollReveal>
-        <TestimonialCarousel />
+        <Work />
       </ScrollReveal>
 
       <ScrollReveal>
-        <Footer />
+        <Process />
       </ScrollReveal>
+
+      <ScrollReveal>
+        <AboutStudio />
+      </ScrollReveal>
+
+      <Manifesto />
     </main>
   );
 };

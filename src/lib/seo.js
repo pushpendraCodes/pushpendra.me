@@ -6,7 +6,7 @@ export const SEO = {
   description:
     'One9 Tech in Rewa, Madhya Pradesh — custom websites, mobile apps, and software for local businesses. Founded by Pushpendra Patel. Serving Rewa, Satna, Sidhi and nearby.',
   keywords:
-    'website development Rewa, app developer near me, software company Rewa, mobile app development Madhya Pradesh, web developer Rewa, One9 Tech',
+    'website development Rewa, app developer near me, software company Rewa, mobile app development Madhya Pradesh, web developer Rewa, digital marketing Rewa, SEO services Rewa, One9 Tech',
   image: `${SITE_URL}/logo.png`,
   locale: 'en_IN',
 };
@@ -90,6 +90,24 @@ export const localBusinessJsonLd = {
               name: 'Custom Software Development',
               description:
                 'Business software, automation, ERP/CRM, and billing systems.',
+            },
+          },
+          {
+            '@type': 'Offer',
+            itemOffered: {
+              '@type': 'Service',
+              name: 'Digital Marketing in Rewa',
+              description:
+                'Google Ads, Meta Ads, social media management, and conversion tracking for local businesses.',
+            },
+          },
+          {
+            '@type': 'Offer',
+            itemOffered: {
+              '@type': 'Service',
+              name: 'SEO Services in Rewa',
+              description:
+                'Technical SEO, on-page optimization, and local SEO with Google Business Profile.',
             },
           },
         ],

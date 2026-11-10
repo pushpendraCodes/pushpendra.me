@@ -1,175 +1,114 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowRight, MessageCircle } from "lucide-react";
-import { useTheme } from "../context/ThemeContext";
-import {
-  DIALOGUES,
-  FRAME_COUNT,
-  HERO_TEXT_FADE_END,
-  framePath,
-} from "../lib/hero";
+import React, { useEffect, useRef, useState } from "react";
+import { ArrowRight } from "lucide-react";
+import { DIALOGUES, FRAME_COUNT, HERO_TEXT_FADE_END } from "../lib/hero";
+import { WHATSAPP_URL } from "../lib/tokens";
 
-const HudCorner = ({ corner, size = 26, className = "" }) => {
-  const paths = {
-    tl: `M 2 ${size} L 2 2 L ${size} 2`,
-    tr: `M ${size - 20} 2 L ${size} 2 L ${size} ${size}`,
-    bl: `M 2 ${size - 20} L 2 ${size} L ${size} ${size}`,
-    br: `M ${size - 20} ${size} L ${size} ${size} L ${size} ${size - 20}`,
+/* ------------------------------------------------------------------ */
+/* Procedural 3D artwork — original One9 Tech "signal knot"            */
+/* A wireframe torus knot rendered on 2D canvas with perspective       */
+/* projection. Rotation + zoom are driven by scroll progress; a slow   */
+/* time-based drift keeps it alive while idle. No image assets.        */
+/* ------------------------------------------------------------------ */
+
+const TAU = Math.PI * 2;
+const CURVE_N = 280; // samples along the knot curve
+const STRANDS = 6; // parallel wires forming the tube
+const TUBE_R = 0.34; // tube radius (knot units)
+const RING_EVERY = 14; // cross-section ring frequency
+const PARTICLES = 110;
+
+const buildGeometry = () => {
+  const p = 2;
+  const q = 3;
+  const curve = [];
+  for (let i = 0; i < CURVE_N; i++) {
+    const t = (i / CURVE_N) * TAU;
+    const r = Math.cos(q * t) + 2;
+    curve.push([
+      r * Math.cos(p * t),
+      r * Math.sin(p * t),
+      -Math.sin(q * t) * 1.15,
+    ]);
+  }
+
+  const strands = Array.from({ length: STRANDS }, () => []);
+  for (let i = 0; i < CURVE_N; i++) {
+    const prev = curve[(i - 1 + CURVE_N) % CURVE_N];
+    const next = curve[(i + 1) % CURVE_N];
+    // tangent
+    let tx = next[0] - prev[0];
+    let ty = next[1] - prev[1];
+    let tz = next[2] - prev[2];
+    const tl = Math.hypot(tx, ty, tz) || 1;
+    tx /= tl;
+    ty /= tl;
+    tz /= tl;
+    // normal = tangent x up (fallback if parallel)
+    let nx = ty * 1 - tz * 0;
+    let ny = tz * 0 - tx * 1;
+    let nz = tx * 0 - ty * 0;
+    let nl = Math.hypot(nx, ny, nz);
+    if (nl < 1e-4) {
+      nx = ty * 0 - tz * 1;
+      ny = tz * 0 - tx * 0;
+      nz = tx * 1 - ty * 0;
+      nl = Math.hypot(nx, ny, nz) || 1;
+    }
+    nx /= nl;
+    ny /= nl;
+    nz /= nl;
+    // binormal = tangent x normal
+    const bx = ty * nz - tz * ny;
+    const by = tz * nx - tx * nz;
+    const bz = tx * ny - ty * nx;
+
+    for (let s = 0; s < STRANDS; s++) {
+      const a = (s / STRANDS) * TAU;
+      const ca = Math.cos(a) * TUBE_R;
+      const sa = Math.sin(a) * TUBE_R;
+      strands[s].push([
+        curve[i][0] + nx * ca + bx * sa,
+        curve[i][1] + ny * ca + by * sa,
+        curve[i][2] + nz * ca + bz * sa,
+      ]);
+    }
+  }
+
+  // ambient particle field (deterministic pseudo-random)
+  const particles = [];
+  let seed = 19;
+  const rand = () => {
+    seed = (seed * 16807) % 2147483647;
+    return seed / 2147483647;
   };
-  return (
-    <svg
-      aria-hidden="true"
-      width={size}
-      height={size}
-      viewBox={`0 0 ${size} ${size}`}
-      fill="none"
-      className={className}
-    >
-      <path
-        d={paths[corner]}
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="square"
-      />
-    </svg>
-  );
+  for (let i = 0; i < PARTICLES; i++) {
+    const theta = rand() * TAU;
+    const phi = Math.acos(rand() * 2 - 1);
+    const rad = 4.2 + rand() * 4.5;
+    particles.push([
+      rad * Math.sin(phi) * Math.cos(theta),
+      rad * Math.sin(phi) * Math.sin(theta),
+      rad * Math.cos(phi),
+    ]);
+  }
+
+  return { curve, strands, particles };
 };
 
+const easeInOut = (x) => x * x * (3 - 2 * x);
+
 const Hero = () => {
-  const { isTheme1 } = useTheme();
   const sectionRef = useRef(null);
   const canvasRef = useRef(null);
   const heroTextRef = useRef(null);
   const bigLeftTextRef = useRef(null);
   const progressFillRef = useRef(null);
-  const powerReadoutRef = useRef(null);
   const seqLabelRef = useRef(null);
 
-  const framesRef = useRef([]);
-  const tickingRef = useRef(false);
-  const loadedRef = useRef(false);
-  const lastFrameRef = useRef(-1);
   const prevVisibleIdsRef = useRef("");
-
-  const [loadProgress, setLoadProgress] = useState(0);
-  const [loaded, setLoaded] = useState(false);
   const [visibleCards, setVisibleCards] = useState(new Set());
 
-  const whatsappUrl =
-    "https://wa.me/918516064332?text=Hello%20Pushpendra%2C%20I%20have%20a%20project%20idea";
-
-  // Theme-aware palette — readable on frame imagery
-  const accent = isTheme1 ? "#C5AA68" : "#8B8175";
-  const bg = isTheme1 ? "#071D18" : "#F4F1EC";
-  const fg = isTheme1 ? "#E9E1CC" : "#FFFFFF";
-  const muted = isTheme1 ? "#AFAF9D" : "rgba(255,255,255,0.78)";
-  const cardBg = isTheme1 ? "rgba(9,37,31,0.92)" : "rgba(38,37,34,0.88)";
-  const cardBorder = isTheme1 ? "rgba(197,170,104,0.28)" : "rgba(255,255,255,0.18)";
-  const cardFg = isTheme1 ? "#E9E1CC" : "#FFFFFF";
-  const cardMuted = isTheme1 ? "#AFAF9D" : "rgba(255,255,255,0.7)";
-
-  const drawFrame = useCallback((index) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    // Prefer requested frame; fall back to nearest loaded frame
-    let img = framesRef.current[index];
-    if (!img || !img.complete || !img.naturalWidth) {
-      for (let i = index; i >= 0; i--) {
-        const candidate = framesRef.current[i];
-        if (candidate?.complete && candidate.naturalWidth) {
-          img = candidate;
-          break;
-        }
-      }
-    }
-    if (!img || !img.complete || !img.naturalWidth) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const cw = canvas.width;
-    const ch = canvas.height;
-    if (!cw || !ch) return;
-
-    const imgRatio = img.naturalWidth / img.naturalHeight;
-    const canvasRatio = cw / ch;
-
-    let drawW;
-    let drawH;
-    if (canvasRatio > imgRatio) {
-      drawW = cw;
-      drawH = cw / imgRatio;
-    } else {
-      drawH = ch;
-      drawW = ch * imgRatio;
-    }
-
-    if (window.innerWidth <= 768) {
-      drawW *= 1.25;
-      drawH *= 1.25;
-    }
-
-    const drawX = (cw - drawW) / 2;
-    const drawY = (ch - drawH) / 2;
-
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.clearRect(0, 0, cw, ch);
-    ctx.drawImage(img, drawX, drawY, drawW, drawH);
-  }, []);
-
-  useEffect(() => {
-    let cancelled = false;
-    let loadedCount = 0;
-    let ready = false;
-    const imgs = new Array(FRAME_COUNT);
-
-    const markReady = () => {
-      if (ready || cancelled) return;
-      ready = true;
-      loadedRef.current = true;
-      setLoaded(true);
-      lastFrameRef.current = 0;
-      drawFrame(0);
-    };
-
-    // Priority-load first frames so hero paints immediately
-    const loadOne = (i) => {
-      const img = new Image();
-      img.decoding = "async";
-      img.src = framePath(i + 1);
-      const onDone = () => {
-        if (cancelled) return;
-        loadedCount++;
-        setLoadProgress(loadedCount / FRAME_COUNT);
-        if (i === 0 || (img.complete && img.naturalWidth)) {
-          markReady();
-          if (lastFrameRef.current === i || lastFrameRef.current < 0) {
-            drawFrame(Math.max(0, lastFrameRef.current));
-          }
-        }
-      };
-      img.onload = onDone;
-      img.onerror = onDone;
-      imgs[i] = img;
-    };
-
-    framesRef.current = imgs;
-    // Load first 8 ASAP, then the rest
-    for (let i = 0; i < Math.min(8, FRAME_COUNT); i++) loadOne(i);
-    const restId = window.setTimeout(() => {
-      for (let i = 8; i < FRAME_COUNT; i++) loadOne(i);
-    }, 50);
-
-    // Failsafe: never leave hero stuck on blank loader
-    const failsafe = window.setTimeout(() => markReady(), 1200);
-
-    return () => {
-      cancelled = true;
-      window.clearTimeout(restId);
-      window.clearTimeout(failsafe);
-    };
-  }, [drawFrame]);
-
+  // Canvas sizing
   useEffect(() => {
     const resizeCanvas = () => {
       const canvas = canvasRef.current;
@@ -179,68 +118,62 @@ const Hero = () => {
       canvas.height = Math.max(1, Math.round(window.innerHeight * dpr));
       canvas.style.width = `${window.innerWidth}px`;
       canvas.style.height = `${window.innerHeight}px`;
-      drawFrame(lastFrameRef.current >= 0 ? lastFrameRef.current : 0);
     };
-
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
     return () => window.removeEventListener("resize", resizeCanvas);
-  }, [drawFrame]);
+  }, []);
 
+  // Render loop + scroll-linked DOM updates
   useEffect(() => {
-    if (!loaded) return;
-    drawFrame(lastFrameRef.current >= 0 ? lastFrameRef.current : 0);
-  }, [loaded, drawFrame]);
+    const geo = buildGeometry();
+    const accent = { r: 43, g: 217, b: 232 }; // #2BD9E8
+    let rafId = 0;
+    let lastSeq = -1;
 
-  useEffect(() => {
-    if (!loaded) return;
+    const projected = new Array(CURVE_N * STRANDS);
+    const projectedCurve = new Array(CURVE_N);
 
-    const update = () => {
-      tickingRef.current = false;
+    const render = (time) => {
+      rafId = requestAnimationFrame(render);
       const section = sectionRef.current;
-      if (!section || !loadedRef.current) return;
+      const canvas = canvasRef.current;
+      if (!section || !canvas) return;
 
       const rect = section.getBoundingClientRect();
-      const scrollable = Math.max(1, section.offsetHeight - window.innerHeight);
+      const vh = window.innerHeight;
+      // Skip rendering when the hero is fully offscreen
+      if (rect.bottom < -80 || rect.top > vh + 80) return;
+
+      const scrollable = Math.max(1, section.offsetHeight - vh);
       const progress = Math.min(1, Math.max(0, -rect.top / scrollable));
 
-      const frameIndex = Math.min(
-        FRAME_COUNT - 1,
-        Math.round(progress * (FRAME_COUNT - 1))
-      );
-
-      if (frameIndex !== lastFrameRef.current) {
-        lastFrameRef.current = frameIndex;
-        drawFrame(frameIndex);
-      }
-
+      /* ---------- DOM updates tied to scroll ---------- */
       if (heroTextRef.current) {
         const opacity = Math.max(0, 1 - progress / HERO_TEXT_FADE_END);
         heroTextRef.current.style.opacity = String(opacity);
         heroTextRef.current.style.transform = `translateY(${(1 - opacity) * 12}px)`;
-        heroTextRef.current.style.pointerEvents = opacity < 0.08 ? "none" : "auto";
+        heroTextRef.current.style.pointerEvents =
+          opacity < 0.08 ? "none" : "auto";
       }
-
       if (bigLeftTextRef.current) {
         const op = Math.min(1, Math.max(0, (progress - 0.12) / 0.1));
-        const fadeOut = progress > 0.85 ? Math.max(0, 1 - (progress - 0.85) / 0.12) : 1;
+        const fadeOut =
+          progress > 0.85 ? Math.max(0, 1 - (progress - 0.85) / 0.12) : 1;
         const finalOp = op * fadeOut;
         bigLeftTextRef.current.style.opacity = String(finalOp);
         bigLeftTextRef.current.style.transform = `translateY(${(1 - finalOp) * 14}px)`;
       }
-
       if (progressFillRef.current) {
         progressFillRef.current.style.transform = `scaleX(${progress})`;
       }
-
-      if (powerReadoutRef.current) {
-        const pwr = 87.3 + Math.sin(progress * Math.PI * 2) * 6.7;
-        powerReadoutRef.current.textContent = `${pwr.toFixed(1)}%`;
-      }
-
-      if (seqLabelRef.current) {
-        const n = String(frameIndex + 1).padStart(3, "0");
-        seqLabelRef.current.textContent = `SEQ ${n} / ${FRAME_COUNT}`;
+      const seq = Math.min(
+        FRAME_COUNT,
+        Math.round(progress * (FRAME_COUNT - 1)) + 1
+      );
+      if (seq !== lastSeq && seqLabelRef.current) {
+        lastSeq = seq;
+        seqLabelRef.current.textContent = `SEQ ${String(seq).padStart(3, "0")} / ${FRAME_COUNT}`;
       }
 
       const newVisible = new Set();
@@ -252,22 +185,156 @@ const Hero = () => {
         prevVisibleIdsRef.current = newIds;
         setVisibleCards(newVisible);
       }
+
+      /* ---------- 3D render ---------- */
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = canvas.width / dpr;
+      const h = canvas.height / dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+
+      const isDesktop = w > 768;
+      const cx = isDesktop ? w * 0.6 : w * 0.5;
+      const cy = isDesktop ? h * 0.44 : h * 0.38;
+      const zoom = 1 + easeInOut(Math.sin(progress * Math.PI)) * 0.5;
+      const scale = Math.min(w, h) * 0.115 * zoom;
+      const fov = 7;
+
+      const rotY = time * 0.00012 + progress * Math.PI * 3;
+      const rotX = 0.45 + progress * 1.1 + Math.sin(time * 0.0001) * 0.08;
+      const cosY = Math.cos(rotY);
+      const sinY = Math.sin(rotY);
+      const cosX = Math.cos(rotX);
+      const sinX = Math.sin(rotX);
+
+      const project = (pt) => {
+        const x1 = pt[0] * cosY - pt[2] * sinY;
+        const z1 = pt[0] * sinY + pt[2] * cosY;
+        const y2 = pt[1] * cosX - z1 * sinX;
+        const z2 = pt[1] * sinX + z1 * cosX;
+        const k = fov / (fov + z2);
+        return [cx + x1 * scale * k, cy + y2 * scale * k, z2];
+      };
+
+      // -- particle field (slow counter-drift) --
+      const pRotY = time * 0.00005;
+      const pCos = Math.cos(pRotY);
+      const pSin = Math.sin(pRotY);
+      ctx.fillStyle = "rgba(244,242,236,0.35)";
+      for (const pt of geo.particles) {
+        const x1 = pt[0] * pCos - pt[2] * pSin;
+        const z1 = pt[0] * pSin + pt[2] * pCos;
+        const y2 = pt[1] * cosX - z1 * sinX;
+        const z2 = pt[1] * sinX + z1 * cosX;
+        const k = fov / (fov + z2);
+        const a = Math.max(0, 0.32 - (z2 + 8.7) * 0.025);
+        if (a <= 0.01) continue;
+        ctx.globalAlpha = a;
+        const s = k > 0.9 ? 1.5 : 1;
+        ctx.fillRect(cx + x1 * scale * k, cy + y2 * scale * k, s, s);
+      }
+      ctx.globalAlpha = 1;
+
+      // -- orbit rings (two tilted hairline ellipses) --
+      ctx.strokeStyle = "rgba(244,242,236,0.10)";
+      ctx.lineWidth = 1;
+      for (let ring = 0; ring < 2; ring++) {
+        const rr = 3.9 + ring * 0.7;
+        const tilt = ring === 0 ? 0.5 : -0.9;
+        ctx.beginPath();
+        for (let i = 0; i <= 72; i++) {
+          const a = (i / 72) * TAU;
+          const px = Math.cos(a) * rr;
+          const pz = Math.sin(a) * rr;
+          const py = Math.sin(a) * Math.sin(tilt) * rr * 0.28;
+          const [sx, sy] = project([px, py, pz]);
+          if (i === 0) ctx.moveTo(sx, sy);
+          else ctx.lineTo(sx, sy);
+        }
+        ctx.stroke();
+      }
+
+      // -- project all strand points --
+      for (let s = 0; s < STRANDS; s++) {
+        const strand = geo.strands[s];
+        for (let i = 0; i < CURVE_N; i++) {
+          projected[s * CURVE_N + i] = project(strand[i]);
+        }
+      }
+      for (let i = 0; i < CURVE_N; i++) {
+        projectedCurve[i] = project(geo.curve[i]);
+      }
+
+      // -- strand wires, batched into depth buckets --
+      const BUCKETS = 5;
+      const paths = Array.from({ length: BUCKETS }, () => new Path2D());
+      for (let s = 0; s < STRANDS; s++) {
+        const base = s * CURVE_N;
+        for (let i = 0; i < CURVE_N; i++) {
+          const a = projected[base + i];
+          const b = projected[base + ((i + 1) % CURVE_N)];
+          const depth = (a[2] + b[2]) * 0.5; // ~[-3.5, 3.5]
+          let bucket = Math.floor(((3.5 - depth) / 7) * BUCKETS);
+          bucket = Math.max(0, Math.min(BUCKETS - 1, bucket));
+          paths[bucket].moveTo(a[0], a[1]);
+          paths[bucket].lineTo(b[0], b[1]);
+        }
+      }
+      for (let bkt = 0; bkt < BUCKETS; bkt++) {
+        const alpha = 0.05 + (bkt / (BUCKETS - 1)) * 0.3;
+        ctx.strokeStyle = `rgba(244,242,236,${alpha})`;
+        ctx.lineWidth = bkt >= BUCKETS - 2 ? 1.1 : 1;
+        ctx.stroke(paths[bkt]);
+      }
+
+      // -- cross-section rings --
+      ctx.strokeStyle = "rgba(244,242,236,0.14)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (let i = 0; i < CURVE_N; i += RING_EVERY) {
+        for (let s = 0; s <= STRANDS; s++) {
+          const pt = projected[(s % STRANDS) * CURVE_N + i];
+          if (s === 0) ctx.moveTo(pt[0], pt[1]);
+          else ctx.lineTo(pt[0], pt[1]);
+        }
+      }
+      ctx.stroke();
+
+      // -- accent signal sweep along the center curve --
+      const sweepLen = Math.floor(CURVE_N * 0.14);
+      const sweepStart = Math.floor(
+        (((progress * 2.2 + time * 0.00005) % 1) + 1) % 1 * CURVE_N
+      );
+      // soft glow pass
+      ctx.lineCap = "round";
+      for (const pass of [
+        { width: 6, alpha: 0.12 },
+        { width: 2.2, alpha: 0.9 },
+      ]) {
+        ctx.strokeStyle = `rgba(${accent.r},${accent.g},${accent.b},${pass.alpha})`;
+        ctx.lineWidth = pass.width;
+        ctx.beginPath();
+        for (let j = 0; j <= sweepLen; j++) {
+          const pt = projectedCurve[(sweepStart + j) % CURVE_N];
+          if (j === 0) ctx.moveTo(pt[0], pt[1]);
+          else ctx.lineTo(pt[0], pt[1]);
+        }
+        ctx.stroke();
+      }
+      // sweep head node
+      const head = projectedCurve[(sweepStart + sweepLen) % CURVE_N];
+      ctx.fillStyle = `rgba(${accent.r},${accent.g},${accent.b},1)`;
+      ctx.beginPath();
+      ctx.arc(head[0], head[1], 3, 0, TAU);
+      ctx.fill();
+      ctx.lineCap = "butt";
     };
 
-    const handleScroll = () => {
-      if (tickingRef.current) return;
-      tickingRef.current = true;
-      requestAnimationFrame(update);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll, { passive: true });
-    handleScroll();
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
-    };
-  }, [drawFrame, loaded]);
+    rafId = requestAnimationFrame(render);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
 
   return (
     <section
@@ -276,11 +343,10 @@ const Hero = () => {
       aria-label="Hero experience"
     >
       <div
-        className="sticky top-0 z-10 w-full overflow-hidden"
+        className="sticky top-0 z-10 w-full overflow-hidden bg-[#080808]"
         style={{
           height: "100dvh",
           minHeight: "100vh",
-          backgroundColor: bg,
           willChange: "transform",
           transform: "translateZ(0)",
         }}
@@ -291,105 +357,58 @@ const Hero = () => {
           style={{ willChange: "contents", transform: "translateZ(0)" }}
         />
 
-        {/* Readability overlay — stronger at bottom for text */}
+        {/* Readability scrim */}
         <div
           className="pointer-events-none absolute inset-0"
           style={{
-            background: isTheme1
-              ? "linear-gradient(to top, rgba(7,29,24,0.92) 0%, rgba(7,29,24,0.35) 35%, rgba(7,29,24,0.15) 60%, rgba(7,29,24,0.45) 100%)"
-              : "linear-gradient(to top, rgba(38,37,34,0.88) 0%, rgba(38,37,34,0.4) 35%, rgba(38,37,34,0.2) 60%, rgba(38,37,34,0.5) 100%)",
+            background:
+              "linear-gradient(to top, rgba(8,8,8,0.9) 0%, rgba(8,8,8,0.35) 38%, rgba(8,8,8,0.1) 62%, rgba(8,8,8,0.55) 100%)",
           }}
         />
 
-        {/* HUD corners */}
-        <div
-          className="pointer-events-none absolute left-5 top-24 md:left-10 md:top-28"
-          style={{ color: accent }}
-        >
-          <HudCorner corner="tl" />
-        </div>
-        <div
-          className="pointer-events-none absolute right-5 top-24 md:right-10 md:top-28"
-          style={{ color: accent }}
-        >
-          <HudCorner corner="tr" />
-        </div>
-        <div
-          className="pointer-events-none absolute bottom-14 left-5 md:bottom-16 md:left-10"
-          style={{ color: accent }}
-        >
-          <HudCorner corner="bl" />
-        </div>
-        <div
-          className="pointer-events-none absolute bottom-14 right-5 md:bottom-16 md:right-10"
-          style={{ color: accent }}
-        >
-          <HudCorner corner="br" />
+        {/* Top meta row */}
+        <div className="pointer-events-none absolute inset-x-0 top-20 z-10 flex items-center justify-between px-5 md:top-24 md:px-10">
+          <span className="font-mono-label text-[#6B6A63]">
+            ONE9 TECH / 01&nbsp;&nbsp;|&nbsp;&nbsp;DIGITAL PRODUCT STUDIO&nbsp;&nbsp;|&nbsp;&nbsp;WEB · APP · SOFTWARE
+          </span>
+          <span className="hidden items-center gap-2 font-mono-label text-[#8A8A8A] sm:inline-flex">
+            <span className="pulse-dot" />
+            SYSTEMS ONLINE
+          </span>
         </div>
 
         {/* Intro hero text */}
         <div
           ref={heroTextRef}
-          className="absolute inset-x-0 bottom-0 z-20 flex flex-col items-start gap-4 px-5 pb-20 md:gap-5 md:px-12 md:pb-24"
+          className="absolute inset-x-0 bottom-0 z-20 flex flex-col items-start gap-5 px-5 pb-20 md:px-10 md:pb-24"
         >
-          <span
-            className="inline-flex items-center gap-2 rounded-full border px-3 py-1.5 font-mono text-[10px] font-medium uppercase tracking-[0.22em] backdrop-blur-md"
-            style={{
-              color: accent,
-              borderColor: isTheme1 ? "rgba(197,170,104,0.35)" : "rgba(255,255,255,0.25)",
-              backgroundColor: isTheme1 ? "rgba(7,29,24,0.55)" : "rgba(38,37,34,0.45)",
-            }}
-          >
-            <span
-              className="inline-block h-1.5 w-1.5 rounded-full"
-              style={{ backgroundColor: accent, boxShadow: `0 0 10px ${accent}` }}
-            />
-            WEBSITE · APP · SOFTWARE // REWA
-          </span>
-
-          <h1
-            className="max-w-[18ch] font-serif text-5xl font-semibold leading-[0.95] tracking-tighter md:text-7xl lg:text-8xl"
-            style={{ color: fg }}
-          >
-            Pushpendra
+          <h1 className="font-display text-[11vw] leading-[0.92] text-[#F4F2EC] sm:text-[8.5vw] lg:text-[6.75rem]">
+            Websites. Apps.
             <br />
-            <span style={{ color: accent }}>Patel</span>
+            <span className="text-[#6B6A63]">Software that ships.</span>
           </h1>
 
-          <p
-            className="max-w-[46ch] font-sans text-sm leading-relaxed md:text-base"
-            style={{ color: muted }}
-          >
-            Website, mobile app, and custom software development in Rewa,
-            Madhya Pradesh — for local businesses and startups who need a
-            product that actually ships.
+          <p className="max-w-[52ch] font-sans text-sm leading-relaxed text-[#8A8A8A] md:text-base">
+            One9 Tech designs and engineers websites, mobile apps, ERP systems,
+            and custom software — built for businesses and startups that need a
+            real product, not a template.
           </p>
 
-          <div className="flex flex-wrap items-center gap-3 pt-1">
+          <div className="flex flex-wrap items-center gap-5 pt-1">
             <a
-              href="#works"
-              className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-xs font-sans uppercase tracking-widest font-semibold transition-all hover:-translate-y-0.5"
-              style={{
-                backgroundColor: accent,
-                color: isTheme1 ? "#071D18" : "#FFFFFF",
-              }}
-            >
-              View My Work
-              <ArrowRight className="h-3.5 w-3.5" />
-            </a>
-            <a
-              href={whatsappUrl}
+              href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border px-6 py-3 text-xs font-sans uppercase tracking-widest font-semibold transition-all hover:-translate-y-0.5"
-              style={{
-                borderColor: isTheme1 ? "rgba(197,170,104,0.5)" : "rgba(255,255,255,0.4)",
-                color: fg,
-                backgroundColor: isTheme1 ? "rgba(7,29,24,0.4)" : "rgba(38,37,34,0.35)",
-              }}
+              className="inline-flex items-center gap-2 bg-[var(--accent)] px-7 py-3.5 font-mono-label text-[#080808] transition-transform duration-200 hover:-translate-y-0.5"
             >
-              <MessageCircle className="h-3.5 w-3.5" />
-              Start a Project
+              Start a Project <ArrowRight className="h-3.5 w-3.5" />
+            </a>
+            <a
+              href="/work"
+              className="group inline-flex items-center gap-2 font-mono-label text-[#F4F2EC] transition-colors hover:text-[var(--accent)]"
+            >
+              Explore Work
+              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
             </a>
           </div>
         </div>
@@ -397,90 +416,36 @@ const Hero = () => {
         {/* Mid-scroll headline */}
         <div
           ref={bigLeftTextRef}
-          className="pointer-events-none absolute bottom-24 left-5 z-10 hidden max-w-[58%] flex-col gap-5 md:flex md:bottom-28 md:left-12"
+          className="pointer-events-none absolute bottom-24 left-5 z-10 hidden max-w-[60%] flex-col gap-5 md:bottom-28 md:left-10 md:flex"
           style={{ opacity: 0 }}
         >
-          <span
-            className="inline-flex items-center gap-2.5 font-mono text-[10px] uppercase tracking-[0.3em]"
-            style={{ color: accent }}
-          >
-            <span
-              aria-hidden
-              className="inline-block h-1.5 w-1.5 rounded-full"
-              style={{ backgroundColor: accent, boxShadow: `0 0 10px ${accent}` }}
-            />
-            Engineering with Craft
+          <span className="inline-flex items-center gap-2.5 font-mono-label text-[var(--accent)]">
+            <span className="pulse-dot" />
+            ENGINEERED TO SHIP
           </span>
-          <h2
-            className="font-serif font-semibold leading-[0.88] tracking-tighter text-[clamp(3.5rem,8vw,7.5rem)]"
-            style={{ color: fg }}
-          >
+          <h2 className="font-display text-[clamp(3.5rem,8.5vw,8rem)] text-[#F4F2EC]">
             Build
             <br />
-            with <span style={{ color: accent }}>One9</span>
+            <span className="text-[#6B6A63]">what&rsquo;s next.</span>
           </h2>
-          <p
-            className="max-w-[36ch] font-mono text-[11px] uppercase tracking-[0.22em]"
-            style={{ color: muted }}
-          >
-            4+ years shipping production products — web, mobile &amp; AI.
+          <p className="max-w-[38ch] font-mono-label text-[#8A8A8A]">
+            4+ years shipping production systems — web · mobile · AI
           </p>
         </div>
 
-        {/* Top meta */}
-        <div className="pointer-events-none absolute left-5 top-20 z-10 flex items-center gap-2 md:left-10 md:top-24">
-          <div className="h-px w-8" style={{ backgroundColor: `${accent}99` }} />
-          <span
-            className="font-mono text-[10px] uppercase tracking-[0.32em]"
-            style={{ color: muted }}
-          >
-            Portfolio — Live
-          </span>
-        </div>
-
-        <div className="pointer-events-none absolute right-5 top-20 z-10 flex items-center gap-3 md:right-10 md:top-24">
-          <span
-            className="font-mono text-[10px] uppercase tracking-[0.32em]"
-            style={{ color: muted }}
-          >
-            Delivery
-          </span>
-          <span
-            ref={powerReadoutRef}
-            className="font-mono text-[10px] uppercase tracking-[0.22em]"
-            style={{ color: accent }}
-          >
-            87.3%
-          </span>
-          <span
-            aria-hidden
-            className="inline-block h-1.5 w-1.5 rounded-full"
-            style={{ backgroundColor: accent, boxShadow: `0 0 10px ${accent}` }}
-          />
-        </div>
-
-        {/* Progress */}
+        {/* Progress rail */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10">
-          <div
-            className="mx-5 mb-3 h-px md:mx-10"
-            style={{ backgroundColor: isTheme1 ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.2)" }}
-          >
+          <div className="mx-5 mb-3 h-px bg-[rgba(244,242,236,0.12)] md:mx-10">
             <div
               ref={progressFillRef}
-              className="h-full origin-left"
-              style={{
-                backgroundColor: accent,
-                transform: "scaleX(0)",
-              }}
+              className="h-full origin-left bg-[var(--accent)]"
+              style={{ transform: "scaleX(0)" }}
             />
           </div>
-          <div
-            className="mx-5 flex items-center justify-between pb-4 font-mono text-[10px] uppercase tracking-[0.28em] md:mx-10"
-            style={{ color: muted }}
-          >
+          <div className="mx-5 flex items-center justify-between pb-4 font-mono-label text-[#6B6A63] md:mx-10">
             <span ref={seqLabelRef}>SEQ 001 / {FRAME_COUNT}</span>
             <span className="hidden sm:inline">ONE9 TECH // EXPERIENCE</span>
-            <span>Scroll ↓</span>
+            <span>SCROLL ↓</span>
           </div>
         </div>
 
@@ -489,103 +454,55 @@ const Hero = () => {
           const visible = visibleCards.has(d.id);
           const position =
             d.id === "d1"
-              ? "top-[22%] right-5 md:right-12"
+              ? "top-[22%] right-5 md:right-10"
               : d.id === "d2"
-                ? "top-1/2 -translate-y-1/2 right-5 md:right-12"
-                : "bottom-24 right-5 md:bottom-28 md:right-12";
+                ? "top-1/2 -translate-y-1/2 right-5 md:right-10"
+                : "bottom-24 right-5 md:bottom-28 md:right-10";
           return (
             <div
               key={d.id}
-              className={`pointer-events-none absolute ${position} z-20 hidden w-[400px] max-w-[90vw] md:block`}
+              className={`pointer-events-none absolute ${position} z-20 hidden w-[380px] max-w-[88vw] md:block`}
             >
               <figure
-                className={`rounded-2xl border p-6 backdrop-blur-xl transition-all duration-300 ease-out ${
+                className={`border border-[rgba(244,242,236,0.12)] bg-[#101010]/95 p-6 backdrop-blur-sm transition-all duration-300 ease-out ${
                   visible ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"
                 }`}
-                style={{
-                  backgroundColor: cardBg,
-                  borderColor: cardBorder,
-                }}
               >
-                <blockquote
-                  className="font-sans text-lg font-medium leading-snug tracking-tight"
-                  style={{ color: cardFg }}
-                >
+                <blockquote className="font-sans text-base font-medium leading-snug text-[#F4F2EC]">
                   &ldquo;{d.quote}&rdquo;
                 </blockquote>
                 <figcaption className="mt-4 flex items-center justify-between">
-                  <span className="font-sans text-sm" style={{ color: cardMuted }}>
-                    {d.speaker}
-                  </span>
-                  <span
-                    className="font-mono text-[10px] uppercase tracking-[0.24em]"
-                    style={{ color: accent }}
-                  >
-                    {d.film}
-                  </span>
+                  <span className="font-sans text-sm text-[#8A8A8A]">{d.speaker}</span>
+                  <span className="font-mono-label text-[var(--accent)]">{d.film}</span>
                 </figcaption>
               </figure>
             </div>
           );
         })}
 
-        {/* Dialogue cards — mobile (single stack, only show visible) */}
-        <div className="pointer-events-none absolute inset-x-0 top-[32%] z-20 flex flex-col gap-3 px-5 md:hidden">
+        {/* Dialogue cards — mobile */}
+        <div className="pointer-events-none absolute inset-x-0 top-[30%] z-20 flex flex-col gap-3 px-5 md:hidden">
           {DIALOGUES.map((d) => {
             const visible = visibleCards.has(d.id);
             return (
               <figure
                 key={d.id}
-                className={`rounded-2xl border p-4 backdrop-blur-xl transition-all duration-300 ease-out ${
-                  visible
-                    ? "translate-y-0 opacity-100"
-                    : "pointer-events-none absolute opacity-0 translate-y-3"
+                className={`border border-[rgba(244,242,236,0.12)] bg-[#101010]/95 p-4 transition-all duration-300 ease-out ${
+                  visible ? "translate-y-0 opacity-100" : "pointer-events-none absolute translate-y-3 opacity-0"
                 }`}
-                style={{
-                  backgroundColor: cardBg,
-                  borderColor: cardBorder,
-                  display: visible ? "block" : "none",
-                }}
+                style={{ display: visible ? "block" : "none" }}
               >
-                <blockquote
-                  className="font-sans text-sm font-medium leading-snug"
-                  style={{ color: cardFg }}
-                >
+                <blockquote className="font-sans text-sm font-medium leading-snug text-[#F4F2EC]">
                   &ldquo;{d.quote}&rdquo;
                 </blockquote>
                 <figcaption className="mt-3 flex items-center justify-between">
-                  <span className="font-sans text-xs" style={{ color: cardMuted }}>
-                    {d.speaker}
-                  </span>
-                  <span
-                    className="font-mono text-[9px] uppercase tracking-[0.2em]"
-                    style={{ color: accent }}
-                  >
-                    {d.film}
-                  </span>
+                  <span className="font-sans text-xs text-[#8A8A8A]">{d.speaker}</span>
+                  <span className="font-mono-label text-[var(--accent)]">{d.film}</span>
                 </figcaption>
               </figure>
             );
           })}
         </div>
-
-        {/* Soft load badge — never covers the whole hero */}
-        {!loaded || loadProgress < 0.98 ? (
-          <div className="pointer-events-none absolute bottom-16 left-1/2 z-30 -translate-x-1/2 md:bottom-20">
-            {loadProgress < 0.98 && (
-              <div
-                className="rounded-full border px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] backdrop-blur-md"
-                style={{
-                  color: accent,
-                  borderColor: isTheme1 ? "rgba(197,170,104,0.35)" : "rgba(255,255,255,0.25)",
-                  backgroundColor: isTheme1 ? "rgba(7,29,24,0.7)" : "rgba(38,37,34,0.65)",
-                }}
-              >
-                Loading frames · {Math.round(loadProgress * 100)}%
-              </div>
-            )}
-          </div>
-        ) : null}
       </div>
     </section>
   );

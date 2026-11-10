@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useTheme } from '../context/ThemeContext';
 
 const CustomCursor = () => {
-  const { isTheme1 } = useTheme();
   const [pos, setPos] = useState({ x: -100, y: -100 });
   const [isHovered, setIsHovered] = useState(false);
   const [hoverText, setHoverText] = useState('');
@@ -10,7 +8,6 @@ const CustomCursor = () => {
   const [isTouch, setIsTouch] = useState(false);
 
   useEffect(() => {
-    // Check touch devices
     if (window.matchMedia('(pointer: coarse)').matches) {
       setIsTouch(true);
       return;
@@ -24,7 +21,6 @@ const CustomCursor = () => {
     const handleMouseLeave = () => setIsVisible(false);
     const handleMouseEnter = () => setIsVisible(true);
 
-    // Watch for hoverable elements
     const handleMouseOver = (e) => {
       const target = e.target.closest('[data-cursor]');
       if (target) {
@@ -59,27 +55,19 @@ const CustomCursor = () => {
 
   return (
     <div
-      className="fixed top-0 left-0 pointer-events-none z-50 transition-transform duration-100 ease-out will-change-transform"
-      style={{
-        transform: `translate3d(${pos.x}px, ${pos.y}px, 0)`,
-      }}
+      className="pointer-events-none fixed left-0 top-0 z-[60] transition-transform duration-100 ease-out will-change-transform"
+      style={{ transform: `translate3d(${pos.x}px, ${pos.y}px, 0)` }}
     >
       <div
-        className={`-translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center transition-all duration-300 font-sans tracking-widest text-[9px] uppercase font-bold ${
+        className={`flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full font-mono text-[9px] font-bold uppercase tracking-widest transition-all duration-300 ${
           isHovered
             ? hoverText
-              ? isTheme1
-                ? 'w-16 h-16 bg-[#C5AA68] text-[#071D18] shadow-[0_0_20px_rgba(197,170,104,0.4)]'
-                : 'w-16 h-16 bg-[#262522] text-[#F4F1EC] shadow-md'
-              : isTheme1
-              ? 'w-8 h-8 bg-transparent border-2 border-[#C5AA68]/80'
-              : 'w-8 h-8 bg-transparent border-2 border-[#262522]/80'
-            : isTheme1
-            ? 'w-3 h-3 bg-[#C5AA68]/90'
-            : 'w-3 h-3 bg-[#262522]/90'
+              ? 'h-16 w-16 bg-[var(--accent)] text-[#080808] shadow-[0_0_20px_rgba(43,217,232,0.4)]'
+              : 'h-8 w-8 border-2 border-[var(--accent)]/80 bg-transparent'
+            : 'h-3 w-3 bg-[var(--accent)]/90'
         }`}
       >
-        {hoverText && <span className="animate-fade-in">{hoverText}</span>}
+        {hoverText && <span>{hoverText}</span>}
       </div>
     </div>
   );

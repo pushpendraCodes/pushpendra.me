@@ -1,158 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=Geist:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-
-/* ==========================================================================
-   DUAL-THEME DESIGN SYSTEM TOKENS
-   Theme 1: Dark Forest-Green Luxury Editorial
-   Theme 2: Editorial Luxury / Minimal Warm Beige
-   ========================================================================== */
-
-:root,
-[data-theme="theme1"] {
-  --bg-primary: #071D18;
-  --bg-secondary: #09251F;
-  --bg-tertiary: #0B2A23;
-  --bg-surface: #10332A;
-  --bg-surface-hover: #143D32;
-  --bg-card: #0c2721;
-  --bg-card-hover: #11362d;
-  
-  --text-primary: #E9E1CC;
-  --text-secondary: #AFAF9D;
-  --text-muted: #7A857C;
-  
-  --accent-gold: #C5AA68;
-  --accent-gold-hover: #D8BD7B;
-  --accent-gold-dark: #B69A5A;
-  --accent-gold-glow: rgba(197, 170, 104, 0.25);
-  
-  --border-subtle: rgba(197, 170, 104, 0.14);
-  --border-medium: rgba(197, 170, 104, 0.25);
-  --border-strong: rgba(197, 170, 104, 0.45);
-  --border-green: rgba(30, 80, 65, 0.5);
-
-  --badge-bg: rgba(197, 170, 104, 0.08);
-  --badge-text: #C5AA68;
-  --badge-border: rgba(197, 170, 104, 0.2);
-
-  --navbar-bg: rgba(7, 29, 24, 0.85);
-  --navbar-border: rgba(197, 170, 104, 0.12);
-
-  --cursor-color: #C5AA68;
-
-  /* Global Fallbacks */
-  --background: #071D18;
-  --foreground: #E9E1CC;
-  --card: #10332A;
-  --card-foreground: #E9E1CC;
-  --border: rgba(197, 170, 104, 0.16);
-  --primary: #C5AA68;
-  --primary-foreground: #071D18;
-}
-
-[data-theme="theme2"] {
-  --bg-primary: #F4F1EC;
-  --bg-secondary: #E9E4DD;
-  --bg-tertiary: #DFD8CE;
-  --bg-surface: #FFFFFF;
-  --bg-surface-hover: #F8F6F2;
-  --bg-card: #FFFFFF;
-  --bg-card-hover: #FAF8F5;
-  
-  --text-primary: #262522;
-  --text-secondary: #77736D;
-  --text-muted: #9A958D;
-  
-  --accent-gold: #8B8175;
-  --accent-gold-hover: #6E655B;
-  --accent-gold-dark: #585148;
-  --accent-gold-glow: rgba(139, 129, 117, 0.18);
-  
-  --border-subtle: #D8D2C9;
-  --border-medium: #C8C1B6;
-  --border-strong: #A8A093;
-  --border-green: #D8D2C9;
-
-  --badge-bg: #EAE5DE;
-  --badge-text: #585148;
-  --badge-border: #D8D2C9;
-
-  --navbar-bg: rgba(244, 241, 236, 0.9);
-  --navbar-border: #D8D2C9;
-
-  --cursor-color: #262522;
-
-  /* Global Fallbacks */
-  --background: #F4F1EC;
-  --foreground: #262522;
-  --card: #FFFFFF;
-  --card-foreground: #262522;
-  --border: #D8D2C9;
-  --primary: #262522;
-  --primary-foreground: #F4F1EC;
+@theme {
+  --font-sans: 'Geist', ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
 
 /* ==========================================================================
-   BASE & TYPOGRAPHY
+   ONE9 TECH — DARK STUDIO DESIGN SYSTEM
+   Near-black void · bone-white Archivo display · JetBrains Mono labels
+   Single acid accent: var(--accent)
    ========================================================================== */
+
+:root {
+  --void: #080808;
+  --surface: #101010;
+  --surface-2: #141414;
+  --bone: #F4F2EC;
+  --muted: #8A8A8A;
+  --dim: #6B6A63;
+  --accent: #2BD9E8;
+  --hairline: rgba(244, 242, 236, 0.10);
+  --hairline-soft: rgba(244, 242, 236, 0.07);
+
+  /* shadcn-style fallbacks */
+  --background: var(--void);
+  --foreground: var(--bone);
+  --card: var(--surface);
+  --card-foreground: var(--bone);
+  --border: var(--hairline);
+  --primary: var(--accent);
+  --primary-foreground: var(--void);
+}
 
 html {
   scroll-behavior: auto;
   overflow-x: clip;
+  background-color: var(--void);
+}
+
+/* Starfield nebula glows */
+.nebula {
+  position: absolute;
+  border-radius: 9999px;
+  will-change: transform;
+  pointer-events: none;
+}
+.nebula-a {
+  left: -25%;
+  top: -30%;
+  width: 90vmax;
+  height: 90vmax;
+  background: radial-gradient(circle, rgba(30, 90, 70, 0.2) 0%, rgba(30, 90, 70, 0) 60%);
+  animation: nebula-drift-a 38s ease-in-out infinite alternate;
+}
+.nebula-b {
+  right: -30%;
+  bottom: -35%;
+  width: 95vmax;
+  height: 95vmax;
+  background: radial-gradient(circle, rgba(43, 217, 232, 0.1) 0%, rgba(43, 217, 232, 0) 60%);
+  animation: nebula-drift-b 44s ease-in-out infinite alternate;
+}
+.nebula-c {
+  right: -15%;
+  top: -35%;
+  width: 75vmax;
+  height: 75vmax;
+  background: radial-gradient(circle, rgba(110, 60, 200, 0.16) 0%, rgba(110, 60, 200, 0) 60%);
+  animation: nebula-drift-c 50s ease-in-out infinite alternate;
+}
+@keyframes nebula-drift-a {
+  to { transform: translate3d(6vw, 5vh, 0) scale(1.08); }
+}
+@keyframes nebula-drift-b {
+  to { transform: translate3d(-5vw, -6vh, 0) scale(1.1); }
+}
+@keyframes nebula-drift-c {
+  to { transform: translate3d(-8vw, 4vh, 0) scale(0.94); }
+}
+
+/* Lenis smooth scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  font-family: "SF Pro Display", "SF Pro Icons", -apple-system, BlinkMacSystemFont,
-    "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: var(--void);
+  color: var(--bone);
+  font-family: 'Geist', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-feature-settings: 'ss01', 'cv11';
+  letter-spacing: -0.005em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: visible;
-  transition: background-color 400ms ease, color 400ms ease;
 }
 
-.font-serif,
-.font-sans,
-.font-signature {
-  font-family: "SF Pro Display", "SF Pro Icons", -apple-system, BlinkMacSystemFont,
-    "Helvetica Neue", Helvetica, Arial, sans-serif;
+/* Typography system */
+.font-display {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  line-height: 0.92;
 }
 
-/* Fine Gold & Editorial Accents */
-.gold-sparkle {
-  color: var(--accent-gold);
-  display: inline-block;
-  line-height: 1;
+.font-mono-label {
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 10px;
+  font-weight: 500;
 }
 
-/* Subtle editorial thin scrollbar */
-::-webkit-scrollbar {
-  width: 7px;
+::selection {
+  background-color: var(--accent);
+  color: var(--void);
 }
-::-webkit-scrollbar-track {
-  background: var(--bg-primary);
+
+/* Thin dark scrollbar */
+::-webkit-scrollbar { width: 7px; }
+::-webkit-scrollbar-track { background: var(--void); }
+::-webkit-scrollbar-thumb { background: rgba(244,242,236,0.16); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* Marquee ticker */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
-::-webkit-scrollbar-thumb {
-  background: var(--border-medium);
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+
+/* Accent pulse dot */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--accent); }
+  50% { opacity: 0.35; box-shadow: 0 0 2px var(--accent); }
+}
+.pulse-dot {
+  width: 6px;
+  height: 6px;
   border-radius: 9999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-gold);
-}
-
-/* Smooth transitions for theme-aware elements */
-.theme-transition {
-  transition: background-color 350ms cubic-bezier(0.16, 1, 0.3, 1),
-              color 350ms cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 350ms cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  background: var(--accent);
+  animation: pulse-dot 2.2s ease-in-out infinite;
 }
 
-/* Scroll-driven frame sequence hero (Optech-style)
-   Tall section = scroll distance for frames; sticky panel stays pinned until frames finish */
+/* Scroll-driven frame sequence hero
+   Tall section = scroll distance; sticky panel pinned until frames finish */
 .scroll-animation {
   height: 350vh;
   min-height: 350vh;
@@ -163,15 +168,9 @@ body {
 }
 
 @media (max-width: 1024px) {
-  .scroll-animation {
-    height: 300vh;
-    min-height: 300vh;
-  }
+  .scroll-animation { height: 300vh; min-height: 300vh; }
 }
 
 @media (max-width: 768px) {
-  .scroll-animation {
-    height: 280vh;
-    min-height: 280vh;
-  }
+  .scroll-animation { height: 280vh; min-height: 280vh; }
 }

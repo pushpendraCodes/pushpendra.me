@@ -55,19 +55,7 @@ const projects = [
     link: 'https://icchhapurti.com/',
     featured: false,
   },
-  {
-    number: '05',
-    title: 'FarmHouse Kitchen',
-    status: 'Live Production',
-    category: 'Food & Hospitality Platform',
-    year: '2024',
-    role: 'Frontend & Backend Developer',
-    description: 'Curated culinary web application showcasing restaurant menus, table reservations, and seamless online food ordering for customers.',
-    image: '/projectsThumbnails/thumbnail3.jpg',
-    technologies: ['React', 'Node.js', 'MongoDB', 'TailwindCSS'],
-    link: 'https://farmhouse-kitchen-website.vercel.app/',
-    featured: false,
-  },
+ 
   {
     number: '06',
     title: 'Optech Computer Institute',
@@ -78,7 +66,7 @@ const projects = [
     description: 'Clean digital education portal for a regional technical institute, facilitating student curriculum access, admission inquiries, and course catalogs.',
     image: '/projectsThumbnails/thumbnail6.png',
     technologies: ['React', 'TailwindCSS', 'Vite'],
-    link: 'https://optech-website.vercel.app/',
+    link: 'https://ocit.in/',
     featured: false,
   },
 ];
