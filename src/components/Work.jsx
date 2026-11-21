@@ -55,19 +55,35 @@ const ProjectCard = ({ project }) => {
         {project.technologies.join(' · ')}
       </p>
 
-      {/* Live site link */}
-      {domain && (
-        <a
-          href={project.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={(e) => e.stopPropagation()}
-          className="font-mono-label mt-4 inline-flex items-center gap-2 border-b border-[rgba(244,242,236,0.2)] pb-0.5 text-[#8A8A8A] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
-        >
-          <Globe className="h-3 w-3" />
-          {domain.toUpperCase()}
-          <ArrowUpRight className="h-3 w-3" />
-        </a>
+      {/* Live links */}
+      {(domain || project.appLink) && (
+        <div className="mt-4 flex flex-wrap items-center gap-4">
+          {domain && (
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="font-mono-label inline-flex items-center gap-2 border-b border-[rgba(244,242,236,0.2)] pb-0.5 text-[#8A8A8A] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+            >
+              <Globe className="h-3 w-3" />
+              {domain.toUpperCase()}
+              <ArrowUpRight className="h-3 w-3" />
+            </a>
+          )}
+          {project.appLink && (
+            <a
+              href={project.appLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="font-mono-label inline-flex items-center gap-2 border-b border-[rgba(244,242,236,0.2)] pb-0.5 text-[#8A8A8A] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+            >
+              GOOGLE PLAY
+              <ArrowUpRight className="h-3 w-3" />
+            </a>
+          )}
+        </div>
       )}
     </div>
   );

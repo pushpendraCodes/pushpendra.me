@@ -389,6 +389,17 @@ const CaseStudy = () => {
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </a>
             )}
+            {project.appLink && (
+              <a
+                href={project.appLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-cursor="APP"
+                className="inline-flex items-center gap-2.5 border border-[rgba(244,242,236,0.2)] px-8 py-4 font-mono-label text-[#F4F2EC] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+              >
+                Get on Google Play <ArrowUpRight className="h-3.5 w-3.5" />
+              </a>
+            )}
             <a
               href={WHATSAPP_URL}
               target="_blank"

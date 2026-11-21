@@ -959,6 +959,139 @@ export const projects = [
     ],
     link: 'https://ocit.in/',
   },
+  {
+    slug: 'rishton-ki-dor',
+    number: '08',
+    title: 'Rishton Ki Dor',
+    status: 'LIVE',
+    building: false,
+    category: 'MATRIMONY — APP + WEB',
+    year: '2026',
+    description:
+      'A matrimony platform with an Android app on Google Play and a public website — smart matchmaking, detailed profiles, chat, and real-time audio and video calling for finding a life partner.',
+    overview: [
+      'Rishton Ki Dor helps singles and families find a compatible life partner based on education, profession, family values, lifestyle, and personal preferences. The brand promise is simple: bonding relationships for life.',
+      'We built both sides of the product. The public website introduces the service, membership plans, and success stories. The Android app — live on Google Play — is where members discover matches, shortlist profiles, chat, and connect with real-time audio and video calls.',
+      'Members browse swipe-style discovery cards, filter matches, send connection requests, manage shortlists, and keep a full profile with education, occupation, income, and personal details — with push notifications so nothing important is missed.',
+    ],
+    parts: [
+      {
+        name: 'Android App',
+        stack: 'React Native · Live on Google Play',
+        summary:
+          'Match discovery, filters, shortlists, chat with media sharing, audio and video calling, and profile management.',
+      },
+      {
+        name: 'Public Website',
+        stack: 'React · Marketing site',
+        summary:
+          'Brand site with membership plans, success stories, about, and contact — the first stop before downloading the app.',
+      },
+      {
+        name: 'Backend API',
+        stack: 'Node.js · Real-time services',
+        summary:
+          'Profiles, matchmaking, chat, call signalling, push notifications, and membership flows behind the app and site.',
+      },
+    ],
+    systems: [
+      {
+        name: 'Smart Matchmaking',
+        detail:
+          'Discover compatible profiles with a swipe-style card and a browsable match list.',
+        points: [
+          'Discovery cards with photo, age, and location',
+          'Like and pass actions on every profile',
+          'Match percentage and “New Match” badges',
+          'All Matches list with See All',
+        ],
+      },
+      {
+        name: 'Search & Filters',
+        detail:
+          'Find the right people without scrolling endlessly.',
+        points: [
+          'Filter by age, location, education, and profession',
+          'Filtered results with preference-matched profiles',
+          'Send Request and Request Sent states',
+        ],
+      },
+      {
+        name: 'Profiles & Shortlists',
+        detail:
+          'Detailed profiles and a place to save people worth revisiting.',
+        points: [
+          'Education, occupation, company, income, DOB, age, height',
+          'Bio, location, matches and likes counts',
+          'Editable profile with photo',
+          'Shortlist tab for saved profiles',
+        ],
+      },
+      {
+        name: 'Chat & Calling',
+        detail:
+          'Connect in real time once both sides are interested.',
+        points: [
+          'In-app chat with photo, document, and contact sharing',
+          'Real-time audio and video calling',
+          'Push notifications and instant call alerts',
+        ],
+      },
+      {
+        name: 'Website & Membership',
+        detail:
+          'The public face of the brand, with clear plans for joining.',
+        points: [
+          'Hero, about, success stories, and contact',
+          'Gold, Silver, and Bronze membership plans',
+          'Google Play download path for the Android app',
+        ],
+      },
+    ],
+    roles: [
+      'Visitor — browse the website and membership plans',
+      'Member — discover, shortlist, chat, and call from the app',
+      'Admin — profiles, matches, and platform operations',
+    ],
+    integrations: [
+      { name: 'Google Play', use: 'Android distribution for Rishton Ki Dor' },
+      { name: 'Push notifications', use: 'Match alerts, chat, and incoming call notices' },
+      { name: 'Real-time calling', use: 'Audio and video sessions between matched members' },
+    ],
+    engineering: [
+      {
+        title: 'App and website as one product',
+        detail:
+          'The marketing site builds trust and explains membership; the Play Store app is where matchmaking, chat, and calling actually happen.',
+      },
+      {
+        title: 'Match flow that feels familiar',
+        detail:
+          'Swipe-style discovery plus a filtered list with Send Request states — members always know whether they liked someone and whether a request is pending.',
+      },
+      {
+        title: 'Real-time connection layer',
+        detail:
+          'Chat supports media and contacts, while audio and video calling with push alerts keep conversations live without leaving the app.',
+      },
+    ],
+    techGroups: [
+      { label: 'Mobile App', items: ['React Native', 'Android', 'Push Notifications', 'Audio & Video Calls'] },
+      { label: 'Website', items: ['React', 'Responsive UI'] },
+      { label: 'Backend', items: ['Node.js', 'REST API', 'Real-time Chat'] },
+      { label: 'Distribution', items: ['Google Play Store'] },
+    ],
+    technologies: ['React Native', 'React', 'Node.js', 'Real-time'],
+    image: '/projectsImages/rishtonKiDor/image_web1.png',
+    images: [
+      '/projectsImages/rishtonKiDor/image_web1.png',
+      '/projectsImages/rishtonKiDor/image_app1.webp',
+      '/projectsImages/rishtonKiDor/image_app2.webp',
+      '/projectsImages/rishtonKiDor/image_app3.webp',
+    ],
+    link: 'https://rishtonkidor.com/',
+    appLink: 'https://play.google.com/store/apps/details?id=com.rishtokidoor',
+  },
 ];
 
 export const getProject = (slug) => projects.find((p) => p.slug === slug);
