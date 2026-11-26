@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 /* Shared project image block.

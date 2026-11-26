@@ -1,5 +1,8 @@
+'use client';
+
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, ArrowRight, Globe } from 'lucide-react';
 import { projects, projectDomain } from '../lib/projects';
@@ -168,7 +171,7 @@ const WorkCarousel = () => {
                 style={{ transformStyle: 'preserve-3d', backfaceVisibility: 'hidden' }}
               >
                 <Link
-                  to={`/work/${project.slug}`}
+                  href={`/work/${project.slug}`}
                   data-cursor="VIEW"
                   className="relative block"
                 >
@@ -235,7 +238,7 @@ const WorkCarousel = () => {
           </p>
           <div className="mt-4 flex flex-wrap items-center gap-6">
             <Link
-              to={`/work/${current.slug}`}
+              href={`/work/${current.slug}`}
               className="group inline-flex items-center gap-2 border-b border-[var(--accent)] pb-1 font-mono-label text-[#F4F2EC] transition-colors hover:text-[var(--accent)]"
             >
               Know more
@@ -302,7 +305,7 @@ const WorkCarousel = () => {
 /* ================================================================== */
 
 const TiltCard = ({ project, index }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const cardRef = useRef(null);
   const sheenRef = useRef(null);
   const frameRef = useRef(0);
@@ -347,9 +350,9 @@ const TiltCard = ({ project, index }) => {
         role="link"
         tabIndex={0}
         data-cursor="VIEW"
-        onClick={() => navigate(`/work/${project.slug}`)}
+        onClick={() => router.push(`/work/${project.slug}`)}
         onKeyDown={(e) => {
-          if (e.key === 'Enter') navigate(`/work/${project.slug}`);
+          if (e.key === 'Enter') router.push(`/work/${project.slug}`);
         }}
         onMouseMove={handleMove}
         onMouseLeave={handleLeave}

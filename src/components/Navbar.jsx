@@ -1,16 +1,20 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Menu, X, ArrowRight } from 'lucide-react';
 import { WHATSAPP_URL } from '../lib/tokens';
 
 const navLinks = [
   { name: 'Services', href: '/services' },
-  { name: 'Work', href: '/work' },
+  { name: 'Our Work', href: '/work' },
   { name: 'About', href: '/about' },
   { name: 'Contact', href: '/contact' },
 ];
 
 const Navbar = () => {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -30,8 +34,7 @@ const Navbar = () => {
         }`}
       >
         <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-5 md:h-[72px] md:px-10">
-          {/* Logo */}
-          <Link to="/" aria-label="One9 Tech home" className="flex shrink-0 items-center gap-2.5">
+          <Link href="/" aria-label="One9 Tech home" className="flex shrink-0 items-center gap-2.5">
             <img
               src="/logo.png"
               alt="One9 Tech"
@@ -39,24 +42,25 @@ const Navbar = () => {
             />
           </Link>
 
-          {/* Center links — mono labels */}
           <nav className="hidden items-center gap-8 lg:flex">
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.name}
-                to={link.href}
-                className={({ isActive }) =>
-                  `font-mono-label transition-colors duration-200 hover:text-[#F4F2EC] ${
+            {navLinks.map((link) => {
+              const isActive =
+                pathname === link.href ||
+                (link.href !== '/' && pathname.startsWith(link.href));
+              return (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className={`font-mono-label transition-colors duration-200 hover:text-[#F4F2EC] ${
                     isActive ? 'text-[var(--accent)]' : 'text-[#8A8A8A]'
-                  }`
-                }
-              >
-                {link.name}
-              </NavLink>
-            ))}
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
           </nav>
 
-          {/* CTA */}
           <div className="hidden items-center gap-6 lg:flex">
             <a
               href={WHATSAPP_URL}
@@ -69,7 +73,6 @@ const Navbar = () => {
             </a>
           </div>
 
-          {/* Mobile toggle */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
@@ -80,7 +83,6 @@ const Navbar = () => {
         </div>
       </header>
 
-      {/* Mobile menu */}
       <div
         className={`fixed inset-0 z-40 bg-[#080808] transition-all duration-300 lg:hidden ${
           menuOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
@@ -91,7 +93,7 @@ const Navbar = () => {
             {navLinks.map((link, idx) => (
               <Link
                 key={link.name}
-                to={link.href}
+                href={link.href}
                 onClick={() => setMenuOpen(false)}
                 style={{ transitionDelay: menuOpen ? `${idx * 50}ms` : '0ms' }}
                 className={`font-display border-b border-[rgba(244,242,236,0.08)] py-4 text-4xl text-[#F4F2EC] transition-all duration-300 ${

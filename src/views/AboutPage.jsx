@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import AboutStudio from '../components/AboutStudio';
@@ -24,7 +26,7 @@ const AboutPage = () => (
         transition={{ duration: 0.7, delay: 0.08 }}
         className="font-display mt-8 text-6xl text-[#F4F2EC] md:text-[7.5rem]"
       >
-        One studio, <br />
+        Built in Rewa, <br />
         <span className="text-[#6B6A63]">shipped everywhere.</span>
       </motion.h1>
 
@@ -34,9 +36,9 @@ const AboutPage = () => (
         transition={{ duration: 0.6, delay: 0.18 }}
         className="mt-8 max-w-[56ch] font-sans text-base leading-relaxed text-[#8A8A8A] md:text-lg"
       >
-        One9 Tech is a digital product studio run by an engineer, not an
-        account manager. Every project is designed, built, and deployed by the
-        people you actually talk to.
+        One9 Tech is a digital product studio in Rewa, Madhya Pradesh — run by
+        an engineer, not an account manager. Every website, app, and software
+        project is designed, built, and deployed by the people you talk to.
       </motion.p>
 
       <motion.div
@@ -45,7 +47,7 @@ const AboutPage = () => (
         transition={{ duration: 0.6, delay: 0.3 }}
         className="mt-10 flex items-center gap-8 border-y border-[rgba(244,242,236,0.08)] py-4"
       >
-        <span className="font-mono-label text-[#6B6A63]">REMOTE-FIRST</span>
+        <span className="font-mono-label text-[#6B6A63]">REWA, MP</span>
         <span className="font-mono-label text-[#6B6A63]">4+ YEARS</span>
         <span className="font-mono-label hidden text-[#6B6A63] sm:inline">
           10+ SYSTEMS LIVE

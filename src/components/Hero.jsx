@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useRef, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { DIALOGUES, FRAME_COUNT, HERO_TEXT_FADE_END } from "../lib/hero";
@@ -389,8 +391,8 @@ const Hero = () => {
           </h1>
 
           <p className="max-w-[52ch] font-sans text-sm leading-relaxed text-[#8A8A8A] md:text-base">
-            One9 Tech designs and engineers websites, mobile apps, ERP systems,
-            and custom software — built for businesses and startups that need a
+            Website, app, ERP and software development from Rewa, Madhya
+            Pradesh — plus digital marketing and SEO for businesses that need a
             real product, not a template.
           </p>
 

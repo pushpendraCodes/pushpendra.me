@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useRef } from 'react';
 
 /* Universe background — 3D starfield flying toward the camera.

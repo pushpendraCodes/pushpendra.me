@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { Globe } from 'lucide-react';
 import { FaLinkedin, FaGithub } from 'react-icons/fa';
@@ -26,27 +28,27 @@ const AboutStudio = () => (
 
           <div className="mt-10 max-w-[64ch] space-y-5 font-sans text-base leading-relaxed md:text-lg">
             <p className="text-[#F4F2EC]">
-              One9 Tech is a digital product studio founded by full-stack
-              engineer Pushpendra Patel.
+              One9 Tech is a digital product studio in Rewa, Madhya Pradesh —
+              founded by full-stack engineer Pushpendra Patel.
             </p>
             <p className="text-[#8A8A8A]">
-              Over 4+ years we have shipped web applications, SaaS products,
-              e-commerce platforms, ERP systems, and mobile apps for clients
-              across India and beyond — from WhatsApp automation and payment
-              gateways to AI workflows and real-time video.
+              Over 4+ years we have shipped websites, SaaS products, e-commerce
+              platforms, ERP systems, mobile apps, and digital marketing for
+              clients in Rewa and across India — from WhatsApp automation and
+              payment gateways to AI workflows and real-time products.
             </p>
             <p className="text-[#8A8A8A]">
               No templates, no subscriptions. Whether you need a website
-              developer, an app developer, or a complete software partner — you
-              work with the engineer directly, from discovery to launch and
-              support.
+              developer in Rewa, an app developer, an ERP partner, or SEO and
+              ads — you work with the engineer directly, from discovery to
+              launch and support.
             </p>
           </div>
 
           <div className="mt-10 flex flex-wrap items-center gap-6">
             <span className="font-mono-label inline-flex items-center gap-2 text-[#8A8A8A]">
               <Globe className="h-3.5 w-3.5 text-[var(--accent)]" />
-              WORKING WITH CLIENTS WORLDWIDE
+              BASED IN REWA · SERVING MP &amp; WORLDWIDE
             </span>
             <a
               href="https://github.com/pushpendraCodes"

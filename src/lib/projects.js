@@ -804,14 +804,14 @@ export const projects = [
     title: 'Optech Computer Institute',
     status: 'LIVE',
     building: false,
-    category: 'EDUCATION PLATFORM',
+    category: 'EDUCATION — WEB + APP',
     year: '2026',
     description:
-      'A complete institute management platform — multilingual public website with a 3D virtual classroom, a student portal for exams and fees, and an admin console that runs admissions to certificates.',
+      'A complete institute platform — multilingual website with a 3D virtual classroom, Android student app on Google Play, student portal for exams and fees, and an admin console from admissions to certificates.',
     overview: [
       'Optech Computer Institute of Technology has trained students since 1994. It needed one platform to run everything — from the first website visit to the final certificate.',
       'The public website works in English, Hindi, and Marathi, with a course catalog, fee calculator, online enrollment through Razorpay, a public scholarship exam that awards discount coupons, a typing test, and a 3D virtual classroom showing live batches — where students mark attendance with a camera selfie.',
-      'Enrolled students get a portal for mock tests, timed exams, typing practice, notes, live classes, fees and installments, a digital ID card, and certificates. Staff run admissions, batches, attendance, fees, exams, content, and marketing from a permission-gated admin console.',
+      'Students also learn on the go through the OCIT Android app on Google Play — browse courses, watch lessons, attend live classes, take quizzes and exams, track progress, and request certificates. Staff run admissions, batches, attendance, fees, exams, content, and marketing from a permission-gated admin console.',
     ],
     parts: [
       {
@@ -819,6 +819,12 @@ export const projects = [
         stack: 'Next.js 16 · React 19 · Three.js',
         summary:
           'Multilingual public site, online enrollment, 3D live classroom, and the full student portal.',
+      },
+      {
+        name: 'Android Student App',
+        stack: 'React Native · Live on Google Play',
+        summary:
+          'Courses, live classes, quizzes, exams, progress tracking, certificates, OTP login, and payments — in the student’s pocket.',
       },
       {
         name: 'Admin Console',
@@ -844,6 +850,18 @@ export const projects = [
           'Fee calculator with coupons and installments',
           'Online enrollment with Razorpay and PDF invoices',
           'Public scholarship exam that awards discount coupons',
+        ],
+      },
+      {
+        name: 'Android Student App',
+        detail:
+          'The OCIT app on Google Play — learning that travels with the student.',
+        points: [
+          'Register with name and phone, or Google sign-in',
+          'Browse categories, search courses, and open enrolled lessons',
+          'Watch videos, attend live classes, and take quizzes and exams',
+          'Track attendance and progress; request certificates',
+          'Reminders, push notifications, and profile language settings',
         ],
       },
       {
@@ -903,12 +921,13 @@ export const projects = [
       },
     ],
     roles: [
-      'Student — portal login issued by the institute',
+      'Student — portal and Android app login',
       'Teacher — attendance, exams, notes, live classes',
       'Staff — front office, admissions, fees, content',
       'Admin and Super Admin',
     ],
     integrations: [
+      { name: 'Google Play', use: 'Android distribution for the OCIT student app' },
       { name: 'Razorpay', use: 'Online enrollment payments with verified webhooks' },
       { name: 'Firebase Cloud Messaging', use: 'Push notifications for students and staff' },
       { name: 'Cloudinary', use: 'Uploads, attendance selfies, and backups' },
@@ -934,9 +953,9 @@ export const projects = [
           'Percent or fixed coupons with date windows, installments above a minimum fee, automatic overdue marking, and referral rewards with self-referral blocked.',
       },
       {
-        title: 'Smooth on any device',
+        title: 'One backend, every screen',
         detail:
-          'Scroll-driven image sequences load progressively, the 3D scene loads only when needed, and canvas resolution adapts to mobile.',
+          'Website, admin console, and the Google Play student app share the same API — courses, classes, quizzes, and certificates stay in sync wherever the student opens them.',
       },
       {
         title: 'Secure by default',
@@ -946,18 +965,24 @@ export const projects = [
     ],
     techGroups: [
       { label: 'Website', items: ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS 4', 'Three.js', 'React Three Fiber', 'Framer Motion'] },
+      { label: 'Mobile App', items: ['React Native', 'Android', 'OTP Login', 'Push Notifications', 'Google Play'] },
       { label: 'Admin', items: ['React 19', 'Vite', 'TypeScript', 'Redux Toolkit', 'React Hook Form', 'Recharts'] },
       { label: 'Backend', items: ['Express', 'TypeScript', 'MongoDB', 'Mongoose', 'Redis', 'BullMQ', 'Zod'] },
       { label: 'Services', items: ['Razorpay', 'Firebase', 'Cloudinary', 'YouTube API', 'pdf-lib'] },
     ],
-    technologies: ['Next.js', 'Three.js', 'Express', 'MongoDB', 'Redis'],
+    technologies: ['Next.js', 'React Native', 'Three.js', 'Express', 'MongoDB'],
     image: '/projectsImages/Ocit/img1.png',
     images: [
       '/projectsImages/Ocit/img1.png',
       '/projectsImages/Ocit/img2.png',
       '/projectsImages/Ocit/img3.png',
+      '/projectsImages/Ocit/ocit_app.webp',
+      '/projectsImages/Ocit/ocit_app1.webp',
+      '/projectsImages/Ocit/ocit_app2.webp',
+      '/projectsImages/Ocit/ocit_app3.webp',
     ],
     link: 'https://ocit.in/',
+    appLink: 'https://play.google.com/store/apps/details?id=com.courselearning.student',
   },
   {
     slug: 'rishton-ki-dor',
@@ -1088,6 +1113,7 @@ export const projects = [
       '/projectsImages/rishtonKiDor/image_app1.webp',
       '/projectsImages/rishtonKiDor/image_app2.webp',
       '/projectsImages/rishtonKiDor/image_app3.webp',
+      '/projectsImages/rishtonKiDor/image_App4.webp',
     ],
     link: 'https://rishtonkidor.com/',
     appLink: 'https://play.google.com/store/apps/details?id=com.rishtokidoor',

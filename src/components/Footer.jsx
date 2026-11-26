@@ -1,14 +1,16 @@
+'use client';
+
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { FaLinkedin, FaWhatsapp, FaGithub, FaInstagram } from 'react-icons/fa';
 import { WHATSAPP_URL, EMAIL, PHONE } from '../lib/tokens';
 
 const navLinks = [
-  { name: 'Services', to: '/services' },
-  { name: 'Work', to: '/work' },
-  { name: 'About', to: '/about' },
-  { name: 'Contact', to: '/contact' },
+  { name: 'Services', href: '/services' },
+  { name: 'Work', href: '/work' },
+  { name: 'About', href: '/about' },
+  { name: 'Contact', href: '/contact' },
 ];
 
 const Footer = () => (
@@ -59,7 +61,7 @@ const Footer = () => (
         <div className="flex flex-col items-center gap-3 md:items-start">
           <img src="/logo.png" alt="One9 Tech" className="h-9 w-auto rounded-lg object-contain" />
           <span className="font-mono-label text-[#6B6A63]">
-            DIGITAL PRODUCT STUDIO
+            DIGITAL PRODUCT STUDIO · REWA, MADHYA PRADESH
           </span>
         </div>
 
@@ -68,7 +70,7 @@ const Footer = () => (
           {navLinks.map((item) => (
             <Link
               key={item.name}
-              to={item.to}
+              href={item.href}
               className="font-mono-label text-[#8A8A8A] transition-colors hover:text-[#F4F2EC]"
             >
               {item.name}

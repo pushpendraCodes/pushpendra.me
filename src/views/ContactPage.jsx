@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, ArrowRight } from 'lucide-react';
@@ -298,10 +300,10 @@ const ContactPage = () => {
           <div className="bg-[#080808] p-6">
             <p className="font-mono-label text-[#6B6A63]">STUDIO</p>
             <p className="mt-2 font-sans text-base font-medium text-[#F4F2EC]">
-              Remote-first studio
+              Rewa, Madhya Pradesh
             </p>
             <p className="font-mono-label mt-2 text-[#6B6A63]">
-              WORKING WITH CLIENTS WORLDWIDE
+              SERVING MP · INDIA · WORLDWIDE
             </p>
           </div>
 

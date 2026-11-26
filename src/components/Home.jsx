@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import Hero from './Hero';
 import Marquee from './Marquee';
@@ -8,6 +10,7 @@ import Process from './Process';
 import AboutStudio from './AboutStudio';
 import Manifesto from './Manifesto';
 import Work from './Work';
+import LocalPresence from './LocalPresence';
 import ScrollReveal from './ScrollReveal';
 
 const Home = () => {
@@ -39,6 +42,10 @@ const Home = () => {
 
       <ScrollReveal>
         <AboutStudio />
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <LocalPresence />
       </ScrollReveal>
 
       <Manifesto />

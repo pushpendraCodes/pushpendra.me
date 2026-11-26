@@ -1,12 +1,15 @@
+'use client';
+
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { ArrowUpRight, Globe } from 'lucide-react';
 import { projects, projectDomain } from '../lib/projects';
 import ProjectVisual from './ProjectVisual';
 
 /* Card is a div (not <a>) so the live-site link inside can be a real anchor. */
 const ProjectCard = ({ project }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const domain = projectDomain(project.link);
 
   return (
@@ -14,9 +17,9 @@ const ProjectCard = ({ project }) => {
       role="link"
       tabIndex={0}
       data-cursor="VIEW"
-      onClick={() => navigate(`/work/${project.slug}`)}
+      onClick={() => router.push(`/work/${project.slug}`)}
       onKeyDown={(e) => {
-        if (e.key === 'Enter') navigate(`/work/${project.slug}`);
+        if (e.key === 'Enter') router.push(`/work/${project.slug}`);
       }}
       className="group cursor-pointer bg-[#080808] p-6 transition-colors duration-300 hover:bg-[#101010] md:p-10"
     >
@@ -108,7 +111,7 @@ const Work = () => (
           </p>
         </div>
         <Link
-          to="/work"
+          href="/work"
           className="group inline-flex items-center gap-2 font-mono-label text-[#F4F2EC] transition-colors hover:text-[var(--accent)]"
         >
           View all work
@@ -132,7 +135,7 @@ const Work = () => (
             study on this page could be yours.
           </p>
           <Link
-            to="/contact"
+            href="/contact"
             className="inline-flex items-center gap-2 font-mono-label text-[var(--accent)]"
           >
             Start a Project <ArrowUpRight className="h-3.5 w-3.5" />

@@ -1,0 +1,27 @@
+# One9 Tech
+
+> Website, mobile app, ERP, custom software, and digital marketing company based in Rewa, Madhya Pradesh, India.
+
+## Contact
+- Website: https://one9tech.online
+- Email: contact@one9tech.online
+- Phone: +91 8516064332
+- Location: Rewa, Madhya Pradesh, India
+- Founder: Pushpendra Patel
+
+## Services
+- Website development in Rewa
+- Mobile app development (Android / React Native)
+- ERP and custom software
+- Digital marketing (Google Ads, Meta Ads)
+- SEO and local search
+
+## Areas served
+Rewa, Satna, Sidhi, Maihar, Shahdol, Madhya Pradesh, India, and remote clients worldwide.
+
+## Key pages
+- https://one9tech.online/
+- https://one9tech.online/services
+- https://one9tech.online/work
+- https://one9tech.online/about
+- https://one9tech.online/contact

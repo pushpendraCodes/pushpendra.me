@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import SystemsAccordion from '../components/SystemsAccordion';
@@ -25,8 +27,8 @@ const ServicesPage = () => (
         transition={{ duration: 0.7, delay: 0.08 }}
         className="font-display mt-8 text-6xl text-[#F4F2EC] md:text-[7.5rem]"
       >
-        What we <br />
-        <span className="text-[#6B6A63]">engineer.</span>
+        Services in <br />
+        <span className="text-[#6B6A63]">Rewa, MP.</span>
       </motion.h1>
 
       <motion.p
@@ -36,8 +38,9 @@ const ServicesPage = () => (
         className="mt-8 max-w-[56ch] font-sans text-base leading-relaxed text-[#8A8A8A] md:text-lg"
       >
         Website development, mobile apps, ERP, custom software, automation,
-        design, digital marketing, and SEO — from the first build to the first
-        thousand customers. One team, end to end.
+        UI/UX, digital marketing, and SEO for businesses in Rewa, Satna, Sidhi
+        and across Madhya Pradesh — from the first build to the first thousand
+        customers.
       </motion.p>
 
       <motion.div

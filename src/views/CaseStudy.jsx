@@ -1,5 +1,7 @@
+'use client';
+
 import React from 'react';
-import { Link, Navigate, useParams } from 'react-router-dom';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowUpRight, ArrowRight } from 'lucide-react';
 import { getProject, getNextProject } from '../lib/projects';
@@ -54,11 +56,10 @@ const Chip = ({ children }) => (
   </span>
 );
 
-const CaseStudy = () => {
-  const { slug } = useParams();
+const CaseStudy = ({ slug }) => {
   const project = getProject(slug);
 
-  if (!project) return <Navigate to="/work" replace />;
+  if (!project) return null;
 
   const next = getNextProject(slug);
   const allTech = project.techGroups
@@ -71,7 +72,7 @@ const CaseStudy = () => {
       <header className="mx-auto max-w-[1400px] px-5 md:px-10">
         <motion.div variants={riseIn} initial="hidden" animate="visible" custom={0}>
           <Link
-            to="/work"
+            href="/work"
             className="group inline-flex items-center gap-2 font-mono-label text-[#8A8A8A] transition-colors hover:text-[#F4F2EC]"
           >
             <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-x-1" />
@@ -414,7 +415,7 @@ const CaseStudy = () => {
 
       {/* ======== Next project ======== */}
       <Link
-        to={`/work/${next.slug}`}
+        href={`/work/${next.slug}`}
         data-cursor="NEXT"
         className="group block border-t border-[rgba(244,242,236,0.08)] bg-[#080808]"
       >
